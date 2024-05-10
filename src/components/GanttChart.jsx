@@ -59,18 +59,18 @@ function GanttChart ({view,isChecked}) {
         setTasks(newTasks);
     };
 
-    let cwidth = 165;
+    let colswidth = 165;
     if (view === ViewMode.Hour) {
-        cwidth = 150;
+        colswidth = 150;
     }
     if (view === ViewMode.Year) {
-        cwidth = 310;
+        colswidth = 310;
     }
     if (view === ViewMode.Month) {
-        cwidth = 250;
+        colswidth = 250;
     }
     if (view === ViewMode.Week) {
-        cwidth = 200;
+        colswidth = 200;
     }
 
     return (
@@ -84,7 +84,7 @@ function GanttChart ({view,isChecked}) {
                 // onDoubleClick={doubleClickHandler}
                 onDelete={deleteHandler}
                 listCellWidth={isChecked ? "160px" : ""}
-                columnWidth={cwidth}
+                columnWidth={colswidth}
                 rowHeight={40}
                 // arrowColor="#00FF00"
             />
