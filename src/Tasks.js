@@ -85,7 +85,7 @@ export const initTasks = () => {
         },
     ];
     let newTasks = tasks;
-    newTasks = tasks.map((t) => {return {...t,};});
+    newTasks = tasks.map((task) => {return {...task,};});
     return newTasks;
 };
 

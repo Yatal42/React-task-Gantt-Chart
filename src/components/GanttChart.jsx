@@ -16,16 +16,18 @@ function GanttChart ({view,isChecked}) {
         }
         return ok;
     };
-    const doubleClickHandler = (task: Task) => {
-        toast.success("Event Id: " + task.id, {
-            style: {
-                borderRadius: "10px",
-                background: "#333",
-                color: "#fff",
-            },
-            duration: 1000,
-        });
-    };
+
+    // const doubleClickHandler = (task: Task) => {
+    //     toast.success("Event Id: " + task.id, {
+    //         style: {
+    //             borderRadius: "10px",
+    //             background: "#333",
+    //             color: "#fff",
+    //         },
+    //         duration: 1000,
+    //     });
+    // };
+
     const expanderClickHandler = (task: Task) => {
         let newTasks = tasks.map((t) => (t.id === task.id ? task : t));
         setTasks(newTasks);
@@ -79,7 +81,7 @@ function GanttChart ({view,isChecked}) {
                 onDateChange={handleTaskChange}
                 onProgressChange={progressChangeHandler}
                 onExpanderClick={expanderClickHandler}
-                onDoubleClick={doubleClickHandler}
+                // onDoubleClick={doubleClickHandler}
                 onDelete={deleteHandler}
                 listCellWidth={isChecked ? "160px" : ""}
                 columnWidth={cwidth}

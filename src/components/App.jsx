@@ -7,7 +7,7 @@ import ViewSwitcher from "./ViewSwitcher";
 
 function App(){
   const [isChecked, setIsChecked] = useState(true);
-  const [view, setView] = useState(ViewMode.Month);
+  const [view, setView] = useState(ViewMode.Week);
   return (
       <div className="flex-container">
         <ViewSwitcher
