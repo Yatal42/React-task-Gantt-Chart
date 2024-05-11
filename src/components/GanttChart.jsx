@@ -8,14 +8,15 @@ import {initTasks} from "../Tasks";
 
 function GanttChart ({view,isChecked}) {
     const [tasks, setTasks] = useState(initTasks());
-    const deleteHandler = (task: Task) => {
-        let ok = window.confirm("Are you sure about : " + task.name + " ? ");
 
-        if (ok) {
-            setTasks(tasks.filter((t) => t.id !== task.id));
-        }
-        return ok;
-    };
+    // const deleteHandler = (task: Task) => {
+    //     let ok = window.confirm("Are you sure about : " + task.name + " ? ");
+    //
+    //     if (ok) {
+    //         setTasks(tasks.filter((t) => t.id !== task.id));
+    //     }
+    //     return ok;
+    // };
 
     // const doubleClickHandler = (task: Task) => {
     //     toast.success("Event Id: " + task.id, {
@@ -82,7 +83,7 @@ function GanttChart ({view,isChecked}) {
                 onProgressChange={progressChangeHandler}
                 onExpanderClick={expanderClickHandler}
                 // onDoubleClick={doubleClickHandler}
-                onDelete={deleteHandler}
+                // onDelete={deleteHandler}
                 listCellWidth={isChecked ? "160px" : ""}
                 columnWidth={colswidth}
                 rowHeight={40}
