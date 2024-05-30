@@ -11,14 +11,14 @@ app.use(bodyParser.json());
 
 // Create a MySQL connection pool
 const db = mysql.createPool({
-    host: '',
-    user: '',
-    password: '',
-    database: ''
+    host: '185.60.170.80',
+    user: 'sandbox_user',
+    password: '123123',
+    database: 'sandbox'
 });
 
 app.get('/api/tasks', (req, res) => {
-    const sql = 'SELECT * FROM task LIMIT 12';
+    const sql = 'SELECT * FROM task WHERE pid=100';
     db.query(sql, (error, results) => {
         if (error) {
             return res.status(500).send(error);
@@ -31,10 +31,9 @@ app.get('/api/tasks', (req, res) => {
                 end: task.deadline,
                 type: task.stage,
 
-
             }
         })
-
+        console.log(JSON.stringify(tasks))
         res.status(200).json(tasks);
     });
 });

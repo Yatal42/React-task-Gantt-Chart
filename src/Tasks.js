@@ -1,7 +1,8 @@
-import { Task } from "gantt-task-react";
+//import { Task } from "gantt-task-react";
 export const initTasks = () => {
     const currentDate = new Date();
-    const tasks: Task[] = [
+    //const tasksFromServer=[{"id":39,"nameAndTitle":"Initiation Document","start":null,"end":"2023-7-17","type":"Plan"},{"id":40,"nameAndTitle":"Customer Requirements Document","start":null,"end":"2023-8-14","type":"Plan"},{"id":41,"nameAndTitle":"Specification Document","start":null,"end":"2023-9-25","type":"Plan"}]
+    const tasks = [
         {
             start: new Date(currentDate.getFullYear(), currentDate.getMonth(), 1),
             end: new Date(currentDate.getFullYear(), currentDate.getMonth(), 15),
