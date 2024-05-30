@@ -7,7 +7,7 @@ import {initTasks} from "../Tasks";
 
 
 function GanttChart ({view,isChecked}) {
-    const [tasks, setTasks] = useState(initTasks());
+    const [tasks, setTasks] = useState(initTasks);
 
     // const deleteHandler = (task: Task) => {
     //     let ok = window.confirm("Are you sure about : " + task.name + " ? ");
@@ -29,19 +29,19 @@ function GanttChart ({view,isChecked}) {
     //     });
     // };
 
-    const expanderClickHandler = (task: Task) => {
+    const expanderClickHandler = (task) => {
         let newTasks = tasks.map((t) => (t.id === task.id ? task : t));
         setTasks(newTasks);
         console.log("On ExpanderClick" + task.id);
     };
 
-    const progressChangeHandler = (task: Task) => {
+    const progressChangeHandler = (task) => {
         let newTasks = tasks.map((t) => (t.id === task.id ? task : t));
         setTasks(newTasks);
         console.log("On progress change" + task.id);
     };
 
-    const handleTaskChange = (task: Task) => {
+    const handleTaskChange = (task) => {
         console.log("on Date Change " + task.id);
         let newTasks = tasks.map((t) => (t.id === task.id ? task : t));
         if (task.project) {
