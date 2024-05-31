@@ -8,8 +8,15 @@ export const initTasks = () => {
             end: new Date(currentDate.getFullYear(), currentDate.getMonth(), 15),
             name: "Some Project",
             id: "ProjectSample",
-            progress: 25,
-            type: "task",
+            progress: 50,
+            type: "project",
+            isDisabled: true,
+            styles:{
+                backgroundColor: "#176B87",
+                progressColor: "#bac2cb",
+                progressSelectedColor:"#bac2cb",
+                backgroundSelectedColor:"#176B87"
+            },
         },
         {
             start: new Date(currentDate.getFullYear(), currentDate.getMonth(), 1),
@@ -34,14 +41,14 @@ export const initTasks = () => {
             progress: 0,
             dependencies: ["Task 0"],
             type: "task",
-            project: "ProjectSample"
+            project: "ProjectSample",
         },
         {
             start: new Date(currentDate.getFullYear(), currentDate.getMonth(), 4),
             end: new Date(currentDate.getFullYear(), currentDate.getMonth(), 8, 0, 0),
             name: "Discussion with team",
             id: "Task 2",
-            progress: 10,
+            progress: 29,
             dependencies: ["Task 1"],
             type: "task",
             project: "ProjectSample"
@@ -51,7 +58,7 @@ export const initTasks = () => {
             end: new Date(currentDate.getFullYear(), currentDate.getMonth(), 9, 0, 0),
             name: "Developing",
             id: "Task 3",
-            progress: 2,
+            progress: 15,
             dependencies: ["Task 2"],
             type: "task",
             project: "ProjectSample"
@@ -81,7 +88,7 @@ export const initTasks = () => {
             end: new Date(currentDate.getFullYear(), currentDate.getMonth(), 19),
             name: "Party Time",
             id: "Task 9",
-            progress: 1,
+            progress: 39,
             type: "task",
         },
     ];
