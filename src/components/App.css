@@ -1,38 +1,98 @@
-.App {
+#title {
+  font-size: 50px;
+  color: #176B87;
+  font-weight: bold;
+  margin-bottom: 0;
   text-align: center;
+  display: inline-block;
 }
 
-.App-logo {
-  height: 40vmin;
-  pointer-events: none;
+#line {
+  height: 10px;
+  background-color: #64CCC5;
+  border-radius: 15px;
+  width: 100%;
+  max-width: 100%;
+  display: block;
 }
-
-@media (prefers-reduced-motion: no-preference) {
-  .App-logo {
-    animation: App-logo-spin infinite 20s linear;
-  }
-}
-
-.App-header {
-  background-color: #282c34;
-  min-height: 100vh;
+.textField-container{
   display: flex;
-  flex-direction: column;
-  align-items: center;
   justify-content: center;
-  font-size: calc(10px + 2vmin);
+  margin: 20px auto;
+}
+/* 
+.button-container {
+  display: flex;
+  justify-content: space-between;
+  margin: 20px auto;
+  gap: 3px;
+} */
+
+.button {
+  border-radius: 24px;
+  background: #176B87;
   color: white;
+  padding: 9px 34px 8px 33px;
+  font-size: 80%;
+  border: none;
+  cursor: pointer;
+  text-align: center;
+  flex: 1;
 }
 
-.App-link {
-  color: #61dafb;
+@media only screen and (max-width: 1150px) {
+  #title {
+    font-size: 30px;
+    text-align: center;
+    width: 100%;
+  }
+
+  #line {
+    width: 100%;
+    margin: 0 0 20px 0;
+  }
+
+  .button-container {
+    flex-direction: column;
+    align-items: center;
+    gap: 10px; /* Increased gap for vertical layout */
+  }
+
+  .button {
+    width: 100%;
+    margin: 0;
+  }
+  .gantt-container {
+    width: 80%;
+  }
 }
 
-@keyframes App-logo-spin {
-  from {
-    transform: rotate(0deg);
-  }
-  to {
-    transform: rotate(360deg);
-  }
+.view-switcher {
+  text-align: center;
+  margin: auto;
+  width: fit-content;
+}
+
+.center-container {
+  width: fit-content;
+  margin: auto;
+}
+
+body {
+  margin: 0;
+  font-family: Montserrat, sans-serif;
+  font-weight: 400;
+  line-height: 1.5;
+  background-color: #fff;
+}
+
+.gantt-container {
+  font-size: large;
+  margin: auto;
+  overflow: auto;
+  border-radius: 20px;
+  border: 1px solid #176B87;
+  box-shadow: 0 15px 75px 0 rgba(23, 107, 135, 0.41);
+  padding: 28px;
+  max-width: 1200px;
 }
