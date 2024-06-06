@@ -1,7 +1,6 @@
+import React, { useState, useEffect } from "react";
 import { Gantt } from 'gantt-task-react';
 import "gantt-task-react/dist/index.css";
-import { useState, useEffect } from "react";
-//import toast from "react-hot-toast";
 import { getStartOrEndDate } from "../Helper.ts";
 import { initTasks } from "../Tasks";
 
@@ -11,12 +10,6 @@ function GanttChart({ view, isChecked }) {
     const [colswidth, setColsWidth] = useState(() => {
         return window.innerWidth <= 1150 ? 100 : 165;
     });
-
-    const expanderClickHandler = (task) => {
-        let newTasks = tasks.map((t) => (t.id === task.id ? task : t));
-        setTasks(newTasks);
-        console.log("On ExpanderClick" + task.id);
-    };
 
     const progressChangeHandler = (task) => {
         let newTasks = tasks.map((t) => (t.id === task.id ? task : t));
@@ -43,6 +36,11 @@ function GanttChart({ view, isChecked }) {
         setTasks(newTasks);
     };
 
+    const handleSelect = (task, isSelected) => {
+        console.log(task.name + " has " + (isSelected ? "selected" : "unselected"));
+      };
+      //TODO add on click an edit task pop up window
+      
     useEffect(() => {
         function handleResize() {
             if (isChecked) {
@@ -61,7 +59,7 @@ function GanttChart({ view, isChecked }) {
                 viewMode={view}
                 onDateChange={handleTaskChange}
                 onProgressChange={progressChangeHandler}
-                onExpanderClick={expanderClickHandler}
+                onSelect={handleSelect}
                 arrowColor="#64CCC5"
                 barFill="75"
                 barProgressColor="#176B87"
