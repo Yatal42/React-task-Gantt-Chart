@@ -14,6 +14,7 @@ function App(){
             setIsChecked={setIsChecked}
             setView={setView}
             isChecked={isChecked}/>
+
         <GanttChart isChecked={isChecked} view={view}/>
       </div>
   );
