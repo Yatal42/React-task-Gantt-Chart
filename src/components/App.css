@@ -15,35 +15,23 @@
   max-width: 100%;
   display: block;
 }
-.textField-container{
-  display: flex;
-  justify-content: center;
-  margin: 20px auto;
-}
-
-/* 
-.button-container {
-  display: flex;
-  justify-content: space-between;
-  margin: 20px auto;
-  gap: 3px;
-} */
 
 .button {
   border-radius: 24px;
+  height: 40px;
+  margin: 10px;
+  width: 120px;
   background: #176B87;
   color: white;
-  padding: 9px 34px 8px 33px;
   font-size: 80%;
   border: none;
   cursor: pointer;
   text-align: center;
-  flex: 1;
 }
 
 @media only screen and (max-width: 1150px) {
   #title {
-    font-size: 30px;
+    font-size: 45px;
     text-align: center;
     width: 100%;
   }
@@ -53,30 +41,30 @@
     margin: 0 0 20px 0;
   }
 
-  .button-container {
-    flex-direction: column;
-    align-items: center;
-    gap: 10px; /* Increased gap for vertical layout */
-  }
-
-  .button {
-    width: 100%;
-    margin: 0;
-  }
   .gantt-container {
-    width: 80%;
+    width: 70%;
   }
 }
 
 .view-switcher {
-  text-align: center;
-  margin: auto;
+  display: flex;
+  justify-content:space-between;
+  align-items: center;
+  height: 80px;
+}
+
+.heading{
   width: fit-content;
+  text-align: center;
 }
 
 .center-container {
   width: fit-content;
-  margin: auto;
+  display: flex;
+  margin-left: auto;
+  margin-right: auto;
+  flex-direction: column;
+  align-items: center;
 }
 
 body {
@@ -91,6 +79,7 @@ body {
   font-size: large;
   margin: auto;
   overflow: auto;
+  width: 85%;
   border-radius: 20px;
   border: 1px solid #176B87;
   box-shadow: 0 15px 75px 0 rgba(23, 107, 135, 0.41);
