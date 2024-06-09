@@ -6,6 +6,8 @@ import GanttChart from "./GanttChart";
 import ViewSwitcher from "./ViewSwitcher";
 
 function App(){
+  //todo- Change the structure so that the buttons,
+  //changing view menu and displaying tasks are inside the Gantt or nav bar
   const [isChecked, setIsChecked] = useState(true);
   const [view, setView] = useState(ViewMode.Week);
   return (
@@ -13,8 +15,7 @@ function App(){
         <ViewSwitcher
             setIsChecked={setIsChecked}
             setView={setView}
-            isChecked={isChecked}/>
-
+            isChecked={isChecked} />
         <GanttChart isChecked={isChecked} view={view}/>
       </div>
   );

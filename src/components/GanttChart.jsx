@@ -3,6 +3,7 @@ import { Gantt } from 'gantt-task-react';
 import "gantt-task-react/dist/index.css";
 import { getStartOrEndDate } from "../Helper.ts";
 import { initTasks } from "../Tasks";
+import EditMenu from "./EditMenu";
 
 function GanttChart({ view, isChecked }) {
     const [tasks, setTasks] = useState(initTasks());
@@ -39,7 +40,6 @@ function GanttChart({ view, isChecked }) {
     const handleSelect = (task, isSelected) => {
         console.log(task.name + " has " + (isSelected ? "selected" : "unselected"));
       };
-      //TODO add on click an edit task pop up window
       
     useEffect(() => {
         function handleResize() {
