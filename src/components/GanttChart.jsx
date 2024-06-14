@@ -6,11 +6,20 @@ import { initTasks } from "../Tasks";
 import EditMenu from "./EditMenu";
 
 function GanttChart({ view, isChecked }) {
-    const [tasks, setTasks] = useState(initTasks());
+    const [tasks, setTasks] = useState([]);
     const [listCellWidth, setListCellWidth] = useState("");
     const [colswidth, setColsWidth] = useState(() => {
         return window.innerWidth <= 1150 ? 100 : 165;
     });
+
+    useEffect(() => {
+        const fetchTasks = async () => {
+            const initTasksGantt = await initTasks();
+            setTasks(initTasksGantt);
+        }
+        fetchTasks();
+    }, []);
+
 
     const progressChangeHandler = (task) => {
         let newTasks = tasks.map((t) => (t.id === task.id ? task : t));
@@ -52,6 +61,10 @@ function GanttChart({ view, isChecked }) {
         return () => window.removeEventListener('resize', handleResize);
     }, [isChecked]);
 
+    console.log({tasks}); //left it for debugging - gil
+    if (tasks.length === 0) {
+        return <div>Loading...</div>;
+    }
     return (
         <div className="gantt-container">
             <Gantt

@@ -1,7 +1,15 @@
 //import { Task } from "gantt-task-react";
-export const initTasks = () => {
+ export const initTasks =async () => {
+   //fetch code from the server
+    // const response = await fetch('http://localhost:8080/api/tasks');
+    // if (!response.ok) {
+    //     throw new Error('Network response was not ok');
+    // }
+    // const data = await response.json();
+    // return data;
+
     const currentDate = new Date();
-    //const tasksFromServer=[{"id":39,"nameAndTitle":"Initiation Document","start":null,"end":"2023-7-17","type":"Plan"},{"id":40,"nameAndTitle":"Customer Requirements Document","start":null,"end":"2023-8-14","type":"Plan"},{"id":41,"nameAndTitle":"Specification Document","start":null,"end":"2023-9-25","type":"Plan"}]
+    const tasksFromServer=[{"id":39,"nameAndTitle":"Initiation Document","start":null,"end":"2023-7-17","type":"Plan"},{"id":40,"nameAndTitle":"Customer Requirements Document","start":null,"end":"2023-8-14","type":"Plan"},{"id":41,"nameAndTitle":"Specification Document","start":null,"end":"2023-9-25","type":"Plan"}]
     const tasks = [
         {
             start: new Date(currentDate.getFullYear(), currentDate.getMonth(), 1),
@@ -92,6 +100,7 @@ export const initTasks = () => {
             type: "task",
         },
     ];
+
     let newTasks = tasks;
     newTasks = tasks.map((task) => {return {...task,};});
     return newTasks;

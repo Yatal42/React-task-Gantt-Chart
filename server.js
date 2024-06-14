@@ -18,7 +18,7 @@ const db = mysql.createPool({
 });
 
 app.get('/api/tasks', (req, res) => {
-    const sql = 'SELECT * FROM task WHERE pid=100';
+    const sql = 'SELECT * FROM task';
     db.query(sql, (error, results) => {
         if (error) {
             return res.status(500).send(error);
