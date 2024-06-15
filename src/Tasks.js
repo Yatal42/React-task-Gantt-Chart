@@ -1,109 +1,72 @@
-//import { Task } from "gantt-task-react";
- export const initTasks =async () => {
-   //fetch code from the server
-    // const response = await fetch('http://localhost:8080/api/tasks');
-    // if (!response.ok) {
-    //     throw new Error('Network response was not ok');
-    // }
-    // const data = await response.json();
-    // return data;
+// import { Task } from "gantt-task-react";
 
-    const currentDate = new Date();
-    const tasksFromServer=[{"id":39,"nameAndTitle":"Initiation Document","start":null,"end":"2023-7-17","type":"Plan"},{"id":40,"nameAndTitle":"Customer Requirements Document","start":null,"end":"2023-8-14","type":"Plan"},{"id":41,"nameAndTitle":"Specification Document","start":null,"end":"2023-9-25","type":"Plan"}]
-    const tasks = [
-        {
-            start: new Date(currentDate.getFullYear(), currentDate.getMonth(), 1),
-            end: new Date(currentDate.getFullYear(), currentDate.getMonth(), 15),
-            name: "Some Project",
-            id: "ProjectSample",
-            progress: 50,
-            type: "project",
-            isDisabled: true,
-            styles:{
+export const transformServerData = (serverData) => {
+    return serverData.map(task => {
+        return {
+            id: task.id.toString(),
+            name: task.nameAndTitle,
+            start: task.start ? new Date(task.start) : null,
+            end: new Date(task.end),
+            type: task.type.toLowerCase(),
+            progress: 0, 
+            dependencies: [], 
+            project: task.project.name, 
+            styles: {
                 backgroundColor: "#176B87",
                 progressColor: "#bac2cb",
-                progressSelectedColor:"#bac2cb",
-                backgroundSelectedColor:"#176B87"
+                progressSelectedColor: "#bac2cb",
+                backgroundSelectedColor: "#112f4f"
             },
-        },
-        {
-            start: new Date(currentDate.getFullYear(), currentDate.getMonth(), 1),
-            end: new Date(
-                currentDate.getFullYear(),
-                currentDate.getMonth(),
-                2,
-                12,
-                28
-            ),
-            name: "Idea",
-            id: "Task 0",
-            progress: 45,
-            type: "task",
-            project: "ProjectSample"
-        },
-        {
-            start: new Date(currentDate.getFullYear(), currentDate.getMonth(), 2),
-            end: new Date(currentDate.getFullYear(), currentDate.getMonth(), 4, 0, 0),
-            name: "Research",
-            id: "Task 1",
-            progress: 0,
-            dependencies: ["Task 0"],
-            type: "task",
-            project: "ProjectSample",
-        },
-        {
-            start: new Date(currentDate.getFullYear(), currentDate.getMonth(), 4),
-            end: new Date(currentDate.getFullYear(), currentDate.getMonth(), 8, 0, 0),
-            name: "Discussion with team",
-            id: "Task 2",
-            progress: 29,
-            dependencies: ["Task 1"],
-            type: "task",
-            project: "ProjectSample"
-        },
-        {
-            start: new Date(currentDate.getFullYear(), currentDate.getMonth(), 8),
-            end: new Date(currentDate.getFullYear(), currentDate.getMonth(), 9, 0, 0),
-            name: "Developing",
-            id: "Task 3",
-            progress: 15,
-            dependencies: ["Task 2"],
-            type: "task",
-            project: "ProjectSample"
-        },
-        {
-            start: new Date(currentDate.getFullYear(), currentDate.getMonth(), 8),
-            end: new Date(currentDate.getFullYear(), currentDate.getMonth(), 10),
-            name: "Review",
-            id: "Task 4",
-            type: "task",
-            progress: 70,
-            dependencies: ["Task 2"],
-            project: "ProjectSample"
-        },
-        {
-            start: new Date(currentDate.getFullYear(), currentDate.getMonth(), 15),
-            end: new Date(currentDate.getFullYear(), currentDate.getMonth(), 15),
-            name: "Release",
-            id: "Task 6",
-            type: "task",
-            progress: 20,
-            dependencies: ["Task 4"],
-            project: "ProjectSample"
-        },
-        {
-            start: new Date(currentDate.getFullYear(), currentDate.getMonth(), 18),
-            end: new Date(currentDate.getFullYear(), currentDate.getMonth(), 19),
-            name: "Party Time",
-            id: "Task 9",
-            progress: 39,
-            type: "task",
-        },
-    ];
-
-    let newTasks = tasks;
-    newTasks = tasks.map((task) => {return {...task,};});
-    return newTasks;
+        };
+    });
 };
 
+export const initTasks = async () => {
+    try {
+        const response = await fetch('http://localhost:8080/api/tasks');
+        if (!response.ok) {
+            throw new Error('Network response was not ok');
+        }
+        const data = await response.json();
+        return transformServerData(data);
+    } catch (error) {
+        console.error('Error fetching tasks:', error);
+        return [];
+    }
+};
+
+export const getStartOrEndDate = (tsks , id) => {
+    const task = tsks.filter((tsk) => tsk.project === id);
+    let start = task[0].start;
+    let end = task[0].end;
+
+    for (let i = 0; i < task.length; i++) {
+        const task = tsks[i];
+        if (start.getTime() > task.start.getTime()) {
+            start = task.start;
+        }
+        if (end.getTime() < task.end.getTime()) {
+            end = task.end;
+        }
+    }
+    return [start, end];
+};
+
+// export const updateTaskOnServer = async (updatedTask) => {
+//     try {
+//         const response = await fetch(`http://localhost:8080/api/tasks/${updatedTask.id}`, {
+//             method: 'PUT',
+//             headers: {
+//                 'Content-Type': 'application/json',
+//             },
+//             body: JSON.stringify(updatedTask),
+//         });
+//         if (!response.ok) {
+//             throw new Error('Network response was not ok');
+//         }
+//         console.log('Task updated successfully');
+//     } catch (error) {
+//         console.error('Error updating task:', error);
+//     }
+// };
 
