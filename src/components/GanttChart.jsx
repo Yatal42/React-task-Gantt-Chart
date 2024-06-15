@@ -1,9 +1,8 @@
 import React, { useState, useEffect } from "react";
 import { Gantt } from 'gantt-task-react';
 import "gantt-task-react/dist/index.css";
-import { getStartOrEndDate } from "../Helper.ts";
-import { initTasks } from "../Tasks";
-import EditMenu from "./EditMenu";
+//import { getStartOrEndDate } from "../Helper.ts";
+import { initTasks, getStartOrEndDate /*updateTaskOnServer*/} from "../Tasks";
 
 function GanttChart({ view, isChecked }) {
     const [tasks, setTasks] = useState([]);
@@ -16,36 +15,52 @@ function GanttChart({ view, isChecked }) {
         const fetchTasks = async () => {
             const initTasksGantt = await initTasks();
             setTasks(initTasksGantt);
-        }
+        };
         fetchTasks();
     }, []);
-
 
     const progressChangeHandler = (task) => {
         let newTasks = tasks.map((t) => (t.id === task.id ? task : t));
         setTasks(newTasks);
         console.log("On progress change" + task.id);
+        //updateTaskOnServer(task);
     };
 
-    const handleTaskChange = (task) => {
-        console.log("on Date Change " + task.id);
-        let newTasks = tasks.map((t) => (t.id === task.id ? task : t));
-        if (task.project) {
-            const [start, end] = getStartOrEndDate(newTasks, task.project);
-            const project =
-                newTasks[newTasks.findIndex((t) => t.id === task.project)];
+    const handleTaskChange = (changedTask) => {
+        console.log("on Date Change " + changedTask.id);
 
-            if (
-                project.start.getTime() !== start.getTime() ||
-                project.end.getTime() !== end.getTime()
-            ) {
-                const changedProject = { ...project, start, end };
-                newTasks.map((t) => (t.id === task.project ? changedProject : t));
+        setTasks(prevTasks => prevTasks.map(task => {
+            if (task.id === changedTask.id) {
+                return {
+                    ...task,
+                    start: changedTask.start,
+                    end: changedTask.end
+                };
             }
-        }
-        setTasks(newTasks);
+            return task; 
+        }));
+    
+        // Update project dates if task belongs to a project
+        // if (changedTask.project) {
+        //     setTasks(prevTasks => {
+        //         const updatedTasks = prevTasks.map(task => {
+        //             if (task.id === changedTask.project) {
+        //                 // Get updated start and end dates for the project
+        //                 const [start, end] = getStartOrEndDate(prevTasks, changedTask.project);
+        //                 return {
+        //                     ...task,
+        //                     start,
+        //                     end
+        //                 };
+        //             }
+        //             return task;
+        //         });
+        //         return updatedTasks;
+        //     });
+        // }
     };
-
+    
+    
     const handleSelect = (task, isSelected) => {
         console.log(task.name + " has " + (isSelected ? "selected" : "unselected"));
       };
