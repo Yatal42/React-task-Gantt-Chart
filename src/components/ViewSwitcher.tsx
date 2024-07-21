@@ -10,9 +10,11 @@ interface ViewSwitcherProps {
   setView: (viewMode: ViewMode) => void;
   isChecked: boolean;
   tasks: Task[];
+  setTasks: (tasks: Task[]) => void;
+  selectedTask: Task | null;
 }
 
-const ViewSwitcher: React.FC<ViewSwitcherProps> = ({ setIsChecked, setView, isChecked, tasks }) => {
+const ViewSwitcher: React.FC<ViewSwitcherProps> = ({ setIsChecked, setView, isChecked, tasks, setTasks, selectedTask }) => {
   const viewsOptions = [
     {
       value: "Day",
@@ -68,7 +70,7 @@ const ViewSwitcher: React.FC<ViewSwitcherProps> = ({ setIsChecked, setView, isCh
           </TextField>
         </div>
         <div className="edit-menu">
-          <EditMenu />
+          <EditMenu selectedTask={selectedTask} tasks={tasks} setTasks={setTasks} />
         </div>
       </div>
     </div>

@@ -1,16 +1,18 @@
 import React, { useState, useEffect, useCallback } from "react";
 import { Gantt, Task, ViewMode } from 'gantt-task-react';
 import "gantt-task-react/dist/index.css";
-import { initTasks, getStartOrEndDate/*,updateTaskOnServer*/ } from "../Tasks";
+import { initTasks, getStartOrEndDate /*, updateTaskOnServer*/ } from "../Tasks";
 
 interface GanttChartProps {
   view: ViewMode;
   isChecked: boolean;
   tasks: Task[];
   setTasks: (tasks: Task[]) => void;
+  setSelectedTask: (task: Task | null) => void;
+  handleSelect: (task: Task, isSelected: boolean) => void;
 }
 
-const GanttChart: React.FC<GanttChartProps> = ({ view, isChecked, tasks, setTasks }) => {
+const GanttChart: React.FC<GanttChartProps> = ({ view, isChecked, tasks, setTasks, setSelectedTask, handleSelect }) => {
   const [listCellWidth, setListCellWidth] = useState<string>("");
   const [colswidth, setColsWidth] = useState(() => window.innerWidth <= 1150 ? 100 : 165);
 
@@ -26,7 +28,7 @@ const GanttChart: React.FC<GanttChartProps> = ({ view, isChecked, tasks, setTask
     const newTasks = tasks.map(t => (t.id === task.id ? { ...task } : t));
     setTasks([...newTasks]);
     console.log("On progress change" + task.id);
-    //updateTaskOnServer(task);
+    // updateTaskOnServer(task);
   }, [tasks, setTasks]);
 
   const handleTaskChange = useCallback((task: Task) => {
@@ -45,7 +47,6 @@ const GanttChart: React.FC<GanttChartProps> = ({ view, isChecked, tasks, setTask
           newTasks[projectIndex] = changedProject;
         }
       }
-    
     }
     setTasks([...newTasks]);
     // Update project dates if task belongs to a project
@@ -66,12 +67,8 @@ const GanttChart: React.FC<GanttChartProps> = ({ view, isChecked, tasks, setTask
     //         return updatedTasks;
     //     });
     // }
-    //updateTaskOnServer(task);
+    // updateTaskOnServer(task);
   }, [tasks, setTasks]);
-
-  const handleSelect = useCallback((task: Task, isSelected: boolean) => {
-    console.log(task.name + " has " + (isSelected ? "selected" : "unselected"));
-  }, []);
 
   useEffect(() => {
     const handleResize = () => {
@@ -92,24 +89,25 @@ const GanttChart: React.FC<GanttChartProps> = ({ view, isChecked, tasks, setTask
 
   return (
     <div className="gantt-container">
-        <Gantt
-            tasks={tasks}
-            viewMode={view}
-            onDateChange={handleTaskChange}
-            onProgressChange={progressChangeHandler}
-            onSelect={handleSelect}
-            arrowColor="#64CCC5"
-            barFill={75}
-            barProgressColor="#176B87"
-            barProgressSelectedColor="#176B87"
-            fontFamily="Montserrat, self-serif"
-            listCellWidth={isChecked ? (window.innerWidth <= 1150 ? "100px" : "160px") : ""}
-            fontSize={isChecked ? (window.innerWidth <= 1150 ? "0.6rem" : "1rem") : "1rem"}
-            columnWidth={colswidth}
-            rowHeight={40}
-        />
+      <Gantt
+        tasks={tasks}
+        viewMode={view}
+        onDateChange={handleTaskChange}
+        onProgressChange={progressChangeHandler}
+        onSelect={handleSelect}
+        arrowColor="#64CCC5"
+        barFill={75}
+        barProgressColor="#176B87"
+        barProgressSelectedColor="#176B87"
+        fontFamily="Montserrat, self-serif"
+        listCellWidth={isChecked ? (window.innerWidth <= 1150 ? "100px" : "160px") : ""}
+        fontSize={isChecked ? (window.innerWidth <= 1150 ? "0.6rem" : "1rem") : "1rem"}
+        columnWidth={colswidth}
+        rowHeight={40}
+      />
     </div>
   );
 }
 
 export default GanttChart;
+

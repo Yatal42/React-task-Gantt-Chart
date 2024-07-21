@@ -7,21 +7,31 @@ import DialogContent from '@mui/material/DialogContent';
 import DialogActions from '@mui/material/DialogActions';
 import IconButton from '@mui/material/IconButton';
 import CloseIcon from '@mui/icons-material/Close';
+import TextField from '@mui/material/TextField';
 import Typography from '@mui/material/Typography';
+import { Task } from "gantt-task-react";
 
 const BootstrapDialog = styled(Dialog)(({ theme }) => ({
   '& .MuiDialogContent-root': {
     padding: theme.spacing(1),
   },
   '& .MuiDialogActions-root': {
-    padding: theme.spacing(1),
+    padding: theme.spacing(2),
   },
 }));
 
-const EditMenu: React.FC = () => {
+interface EditMenuProps {
+  selectedTask: Task | null;
+  tasks: Task[];
+  setTasks: (tasks: Task[]) => void;
+}
+
+const EditMenu: React.FC<EditMenuProps> = ({ selectedTask, tasks, setTasks }) => {
   const [open, setOpen] = useState(false);
   const [noTaskDialogOpen, setNoTaskDialogOpen] = useState(false);
-  const [selectedTask, setSelectedTask] = useState<any | null>(null);  // Manage selectedTask internally
+  const [taskName, setTaskName] = useState(selectedTask?.name || '');
+  const [taskStart, setTaskStart] = useState(selectedTask?.start || new Date());
+  const [taskEnd, setTaskEnd] = useState(selectedTask?.end || new Date());
 
   const handleClickOpen = () => {
     if (!selectedTask) {
@@ -39,13 +49,35 @@ const EditMenu: React.FC = () => {
     setNoTaskDialogOpen(false);
   };
 
-  const handleAddDependencies = () => {};
+  const handleAddDependencies = () => {
+    //TODO
+    console.log('Add Dependencies');
+  };
 
-  const handleDeleteDependencies = () => {};
+  const handleDeleteDependencies = () => {
+    // if (selectedTask) {
+    //   const updatedTask = { ...selectedTask, dependencies: [] };
+    //   setTasks(tasks.map(task => task.id === selectedTask.id ? updatedTask : task));
+    // }
+    // console.log('Delete Dependencies');
+  };
 
-  const handleDelete = () => {};
+  const handleDelete = () => {
+    if (selectedTask) {
+      setTasks(tasks.filter(task => task.id !== selectedTask.id));
+      handleClose();
+    }
+    console.log('Delete Task');
+  };
 
-  const handleSave = () => {};
+  const handleSave = () => {
+    if (selectedTask) {
+      const updatedTask = { ...selectedTask, name: taskName, start: taskStart, end: taskEnd };
+      setTasks(tasks.map(task => task.id === selectedTask.id ? updatedTask : task));
+      handleClose();
+    }
+    console.log('Save Task');
+  };
 
   return (
     <React.Fragment>
@@ -65,13 +97,41 @@ const EditMenu: React.FC = () => {
         </IconButton>
         <DialogContent dividers>
           <Typography gutterBottom>
-            פה אנחנו הולכים להכניס עריכת תאריכים, עריכת שם משימה.
-            אם לא נבחרה משימה, יש להוציא פופ אפ של- ״לא נבחרה משימה״ במקום הדיאלוג הזה.
+            Edit task details below.
           </Typography>
+          <TextField
+            label="Task Name"
+            value={taskName}
+            onChange={(e) => setTaskName(e.target.value)}
+            fullWidth
+            margin="normal"
+          />
+          <TextField
+            label="Start Date"
+            type="date"
+            value={taskStart.toISOString().split('T')[0]}
+            onChange={(e) => setTaskStart(new Date(e.target.value))}
+            fullWidth
+            margin="normal"
+            InputLabelProps={{
+              shrink: true,
+            }}
+          />
+          <TextField
+            label="End Date"
+            type="date"
+            value={taskEnd.toISOString().split('T')[0]}
+            onChange={(e) => setTaskEnd(new Date(e.target.value))}
+            fullWidth
+            margin="normal"
+            InputLabelProps={{
+              shrink: true,
+            }}
+          />
         </DialogContent>
         <DialogActions sx={{ margin: 0, justifyContent: 'space-between' }}>
-          <Button text={"Add dependencie"} onClick={handleAddDependencies} />
-          <Button text={"Delete dependencie"} onClick={handleDeleteDependencies} />
+          <Button text={"Add dependency"} onClick={handleAddDependencies} />
+          <Button text={"Delete dependencies"} onClick={handleDeleteDependencies} />
           <Button text={"Delete this task"} onClick={handleDelete} />
           <Button text={"Save"} onClick={handleSave} />
         </DialogActions>

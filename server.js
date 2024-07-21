@@ -11,9 +11,9 @@ app.use(bodyParser.json());
 
 // Create a MySQL connection pool
 const db = mysql.createPool({
-    host: '185.60.170.80',
+    host: '',
     user: 'sandbox_user',
-    password: '123123',
+    password: '',
     database: 'sandbox'
 });
 
