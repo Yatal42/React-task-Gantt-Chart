@@ -24,7 +24,6 @@ export const transformServerData = (serverData: ServerTask[]): Task[] => {
       backgroundColor: "#176B87",
       progressColor: "#bac2cb",
       progressSelectedColor: "#bac2cb",
-      backgroundSelectedColor: "#112f4f",
     }
   }));
 };
@@ -55,3 +54,21 @@ export const getStartOrEndDate = (tasks: Task[], id: string): [Date, Date] => {
 
   return [start, end];
 };
+
+// export const updateTaskOnServer = async (updatedTask) => {
+//     try {
+//         const response = await fetch(`http://localhost:8080/api/tasks/${updatedTask.id}`, {
+//             method: 'PUT',
+//             headers: {
+//                 'Content-Type': 'application/json',
+//             },
+//             body: JSON.stringify(updatedTask),
+//         });
+//         if (!response.ok) {
+//             throw new Error('Network response was not ok');
+//         }
+//         console.log('Task updated successfully');
+//     } catch (error) {
+//         console.error('Error updating task:', error);
+//     }
+// };
