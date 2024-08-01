@@ -75,14 +75,30 @@ body {
   background-color: #fff;
 }
 
+.icon-container{
+  display: flex;
+  justify-content: center;
+  flex-direction: column;
+  margin-top: 30px;
+  margin-left: 5px;
+  margin-right: 5px;
+}
+
+.gantt{
+  display: block;
+  overflow-x: scroll;
+}
+
 .gantt-container {
+  display:flex;
   font-size: large;
-  margin: auto;
+  margin:auto ;
   overflow: auto;
-  width: 85%;
+  width: 90%;
   border-radius: 20px;
   border: 1px solid #176B87;
   box-shadow: 0 15px 75px 0 rgba(23, 107, 135, 0.41);
   padding: 28px;
+  padding-left: 0px;
   max-width: 1200px;
 }

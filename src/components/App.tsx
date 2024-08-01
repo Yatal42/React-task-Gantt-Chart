@@ -4,6 +4,7 @@ import "gantt-task-react/dist/index.css";
 import "./App.css";
 import GanttChart from "./GanttChart";
 import ViewSwitcher from "./ViewSwitcher";
+import EditMenu from "./EditMenu";
 
 function App() {
     const [selectedTask, setSelectedTask] = useState<Task | null>(null);
@@ -34,6 +35,10 @@ function App() {
         [selectedTask, handleSelect]
     );
 
+    const openEditMenu = (task: Task) => {
+        setSelectedTask(task);
+    };
+
     return (
         <div className="flex-container">
             <ViewSwitcher
@@ -52,6 +57,7 @@ function App() {
                     tasks={tasks}
                     handleSelect={handleSelect}
                     handleDoubleClick={handleDoubleClick}
+                    openEditMenu={openEditMenu}
                 />
             </div>
         </div>

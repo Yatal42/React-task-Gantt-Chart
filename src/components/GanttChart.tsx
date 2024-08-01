@@ -1,7 +1,9 @@
-import React, { useState, useEffect, useCallback } from "react";
+import React, { useState, useEffect, useRef, useCallback} from "react";
 import { Gantt, Task, ViewMode } from "gantt-task-react";
 import "gantt-task-react/dist/index.css";
 import { initTasks, getStartOrEndDate } from "../Tasks";
+import IconButton from "@mui/material/IconButton";
+import EditNoteOutlinedIcon from '@mui/icons-material/EditNoteOutlined';
 
 interface GanttChartProps {
     view: ViewMode;
@@ -10,6 +12,7 @@ interface GanttChartProps {
     setTasks: (tasks: Task[]) => void;
     handleSelect: (task: Task, isSelected: boolean) => void;
     handleDoubleClick: (task: Task) => void;
+    openEditMenu: (task: Task) => void;
 }
 
 const GanttChart: React.FC<GanttChartProps> = ({
@@ -19,7 +22,9 @@ const GanttChart: React.FC<GanttChartProps> = ({
                                                    setTasks,
                                                    handleSelect,
                                                    handleDoubleClick,
+                                                   openEditMenu
                                                }) => {
+    const ganttRef = useRef<HTMLDivElement>(null);
     const [listCellWidth, setListCellWidth] = useState<string>("");
     const [colswidth, setColsWidth] = useState(() =>
         window.innerWidth <= 1150 ? 100 : 165
@@ -83,7 +88,26 @@ const GanttChart: React.FC<GanttChartProps> = ({
     }
 
     return (
-        <div className="gantt-container">
+        <div className="gantt-container" ref={ganttRef}>
+            <div className="icon-container">
+                {tasks.map((task, index) => (
+                    <IconButton
+                        key={task.id}
+                        style={{
+                            display:'inline',
+                            zIndex: 100,
+                            height: '40px',
+                            width: '40px',
+                            marginBottom: '0px',
+                            borderRadius: '5px'
+                        }}
+                        onClick={() => openEditMenu(task)}
+                    >
+                        <EditNoteOutlinedIcon/>
+                    </IconButton>
+                ))}
+            </div>
+            <div className="gantt">
             <Gantt
                 tasks={tasks}
                 viewMode={view}
@@ -92,7 +116,7 @@ const GanttChart: React.FC<GanttChartProps> = ({
                 onSelect={handleSelect}
                 onDoubleClick={handleDoubleClick} // Handle double click
                 arrowColor="#64CCC5"
-                barFill={75}
+                barFill={55}
                 fontFamily="Montserrat, self-serif"
                 listCellWidth={
                     isChecked ? (window.innerWidth <= 1150 ? "100px" : "160px") : ""
@@ -101,8 +125,9 @@ const GanttChart: React.FC<GanttChartProps> = ({
                     isChecked ? (window.innerWidth <= 1150 ? "0.6rem" : "1rem") : "1rem"
                 }
                 columnWidth={colswidth}
-                rowHeight={35}
+                rowHeight={40}
             />
+            </div>
         </div>
     );
 };
