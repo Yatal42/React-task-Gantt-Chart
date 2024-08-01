@@ -1,20 +1,35 @@
-import React, { useState, useEffect, useCallback } from "react";
-import { Gantt, Task, ViewMode } from 'gantt-task-react';
+
+import React, { useState, useEffect, useRef, useCallback} from "react";
+import { Gantt, Task, ViewMode } from "gantt-task-react";
 import "gantt-task-react/dist/index.css";
-import { initTasks, getStartOrEndDate /*, updateTaskOnServer*/ } from "../Tasks";
+import { initTasks, getStartOrEndDate } from "../Tasks";
+import IconButton from "@mui/material/IconButton";
+import EditNoteOutlinedIcon from '@mui/icons-material/EditNoteOutlined';
 
 interface GanttChartProps {
-  view: ViewMode;
-  isChecked: boolean;
-  tasks: Task[];
-  setTasks: (tasks: Task[]) => void;
-  setSelectedTask: (task: Task | null) => void;
-  handleSelect: (task: Task, isSelected: boolean) => void;
+    view: ViewMode;
+    isChecked: boolean;
+    tasks: Task[];
+    setTasks: (tasks: Task[]) => void;
+    handleSelect: (task: Task, isSelected: boolean) => void;
+    handleDoubleClick: (task: Task) => void;
+    openEditMenu: (task: Task) => void;
 }
 
-const GanttChart: React.FC<GanttChartProps> = ({ view, isChecked, tasks, setTasks, setSelectedTask, handleSelect }) => {
-  const [listCellWidth, setListCellWidth] = useState<string>("");
-  const [colswidth, setColsWidth] = useState(() => window.innerWidth <= 1150 ? 100 : 165);
+const GanttChart: React.FC<GanttChartProps> = ({
+                                                   view,
+                                                   isChecked,
+                                                   tasks,
+                                                   setTasks,
+                                                   handleSelect,
+                                                   handleDoubleClick,
+                                                   openEditMenu
+                                               }) => {
+    const ganttRef = useRef<HTMLDivElement>(null);
+    const [listCellWidth, setListCellWidth] = useState<string>("");
+    const [colswidth, setColsWidth] = useState(() =>
+        window.innerWidth <= 1150 ? 100 : 165
+    );
 
   useEffect(() => {
     const fetchTasks = async () => {
@@ -28,7 +43,6 @@ const GanttChart: React.FC<GanttChartProps> = ({ view, isChecked, tasks, setTask
     const newTasks = tasks.map(t => (t.id === task.id ? { ...task } : t));
     setTasks([...newTasks]);
     console.log("On progress change" + task.id);
-    // updateTaskOnServer(task);
   }, [tasks, setTasks]);
 
   const handleTaskChange = useCallback((task: Task) => {
@@ -48,27 +62,6 @@ const GanttChart: React.FC<GanttChartProps> = ({ view, isChecked, tasks, setTask
         }
       }
     }
-    setTasks([...newTasks]);
-    // Update project dates if task belongs to a project
-    // if (changedTask.project) {
-    //     setTasks(prevTasks => {
-    //         const updatedTasks = prevTasks.map(task => {
-    //             if (task.id === changedTask.project) {
-    //                 // Get updated start and end dates for the project
-    //                 const [start, end] = getStartOrEndDate(prevTasks, changedTask.project);
-    //                 return {
-    //                     ...task,
-    //                     start,
-    //                     end
-    //                 };
-    //             }
-    //             return task;
-    //         });
-    //         return updatedTasks;
-    //     });
-    // }
-    // updateTaskOnServer(task);
-  }, [tasks, setTasks]);
 
   useEffect(() => {
     const handleResize = () => {
@@ -86,28 +79,52 @@ const GanttChart: React.FC<GanttChartProps> = ({ view, isChecked, tasks, setTask
   if (tasks.length === 0) {
     return <div>Loading...</div>;
   }
-
+    
   return (
-    <div className="gantt-container">
-      <Gantt
-        tasks={tasks}
-        viewMode={view}
-        onDateChange={handleTaskChange}
-        onProgressChange={progressChangeHandler}
-        onSelect={handleSelect}
-        arrowColor="#64CCC5"
-        barFill={75}
-        barProgressColor="#176B87"
-        barProgressSelectedColor="#176B87"
-        fontFamily="Montserrat, self-serif"
-        listCellWidth={isChecked ? (window.innerWidth <= 1150 ? "100px" : "160px") : ""}
-        fontSize={isChecked ? (window.innerWidth <= 1150 ? "0.6rem" : "1rem") : "1rem"}
-        columnWidth={colswidth}
-        rowHeight={40}
-      />
-    </div>
+      <div className="gantt-container" ref={ganttRef}>
+          <div className="icon-container">
+              {tasks.map((task, index) => (
+                  <IconButton
+                      key={task.id}
+                      style={{
+                          display:'inline',
+                          zIndex: 100,
+                          height: '40px',
+                          width: '40px',
+                          marginBottom: '0px',
+                          borderRadius: '5px'
+                      }}
+                      onClick={() => openEditMenu(task)}
+                  >
+                      <EditNoteOutlinedIcon/>
+                  </IconButton>
+              ))}
+          </div>
+          <div className="gantt">
+          <Gantt
+              tasks={tasks}
+              viewMode={view}
+              onDateChange={handleTaskChange}
+              onProgressChange={progressChangeHandler}
+              onSelect={handleSelect}
+              onDoubleClick={handleDoubleClick} // Handle double click
+              arrowColor="#64CCC5"
+              barFill={55}
+              fontFamily="Montserrat, self-serif"
+              listCellWidth={
+                  isChecked ? (window.innerWidth <= 1150 ? "100px" : "160px") : ""
+              }
+              fontSize={
+                  isChecked ? (window.innerWidth <= 1150 ? "0.6rem" : "1rem") : "1rem"
+              }
+              columnWidth={colswidth}
+              rowHeight={40}
+          />
+          </div>
+      </div>
   );
-}
+};
 
 export default GanttChart;
+
 
