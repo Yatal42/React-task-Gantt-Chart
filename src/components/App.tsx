@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useRef, useCallback } from "react";
+import React, { useState, useCallback } from "react";
 import { ViewMode, Task } from "gantt-task-react";
 import "gantt-task-react/dist/index.css";
 import "./App.css";
@@ -65,4 +65,3 @@ function App() {
 }
 
 export default App;
-
