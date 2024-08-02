@@ -4,7 +4,6 @@ import "gantt-task-react/dist/index.css";
 import "./App.css";
 import GanttChart from "./GanttChart";
 import ViewSwitcher from "./ViewSwitcher";
-import EditMenu from "./EditMenu";
 
 function App() {
     const [selectedTask, setSelectedTask] = useState<Task | null>(null);
@@ -17,33 +16,18 @@ function App() {
         (task: Task, isSelected: boolean) => {
             setSelectedTask(isSelected ? task : null);
             console.log(
-                task.name + " has " + (isSelected ? "selected11" : "unselected11")
+                task.name + " has " + (isSelected ? "selected" : "unselected")
             );
         },
         [setSelectedTask]
     );
-
-    // Handle double click to unselect a task using handleSelect
-    const handleDoubleClick = useCallback(
-        (task: Task) => {
-            if (selectedTask && selectedTask.id === task.id) {
-                handleSelect(task, false); // Use handleSelect to unselect the task
-            } else {
-                handleSelect(task, true); // Select task if it's not currently selected
-            }
-        },
-        [selectedTask, handleSelect]
-    );
-
-    const openEditMenu = (task: Task) => {
-        setSelectedTask(task);
-    };
 
     return (
         <div className="flex-container">
             <ViewSwitcher
                 setIsChecked={setIsChecked}
                 setView={setView}
+                view={view}
                 isChecked={isChecked}
                 tasks={tasks}
                 setTasks={setTasks}
@@ -56,8 +40,6 @@ function App() {
                     setTasks={setTasks}
                     tasks={tasks}
                     handleSelect={handleSelect}
-                    handleDoubleClick={handleDoubleClick}
-                    openEditMenu={openEditMenu}
                 />
             </div>
         </div>

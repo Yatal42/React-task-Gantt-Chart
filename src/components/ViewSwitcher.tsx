@@ -3,11 +3,11 @@ import "gantt-task-react/dist/index.css";
 import { ViewMode, Task } from "gantt-task-react";
 import TextField from "@mui/material/TextField";
 import MenuItem from "@mui/material/MenuItem";
-import EditMenu from "./EditMenu";
 
 interface ViewSwitcherProps {
   setIsChecked: (checked: boolean) => void;
   setView: (viewMode: ViewMode) => void;
+  view: ViewMode;
   isChecked: boolean;
   tasks: Task[];
   setTasks: (tasks: Task[]) => void;
@@ -18,6 +18,7 @@ const ViewSwitcher: React.FC<ViewSwitcherProps> = ({
                                                      setIsChecked,
                                                      setView,
                                                      isChecked,
+                                                     view,
                                                      tasks,
                                                      setTasks,
                                                      selectedTask,
@@ -37,15 +38,12 @@ const ViewSwitcher: React.FC<ViewSwitcherProps> = ({
     },
   ];
 
-  const [selectedView, setSelectedView] = React.useState<ViewMode>(ViewMode.Month); // Default to Month
-
   const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     const selectedOption = viewsOptions.find(
         (option) => option.value === event.target.value
     );
     if (selectedOption) {
       setView(selectedOption.onChange);
-      setSelectedView(selectedOption.onChange); // Update the local state
     }
   };
 
@@ -73,7 +71,7 @@ const ViewSwitcher: React.FC<ViewSwitcherProps> = ({
                 sx={{ minWidth: 150, margin: 5 }}
                 label="View options"
                 size="small"
-                value={selectedView} // Set the value to selectedView state
+                value={view} // Set the value to selectedView state
                 onChange={handleChange}
             >
               {viewsOptions.map((option) => (
@@ -84,11 +82,6 @@ const ViewSwitcher: React.FC<ViewSwitcherProps> = ({
             </TextField>
           </div>
           <div className="edit-menu">
-            <EditMenu
-                selectedTask={selectedTask}
-                tasks={tasks}
-                setTasks={setTasks}
-            />
           </div>
         </div>
       </div>
