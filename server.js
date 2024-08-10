@@ -59,7 +59,6 @@ app.put('/api/tasks/:id', (req, res) => {
         WHERE tid = ?;
     `;
 
-    // db.query(taskSql, [nameAndTitle, start, end, JSON.stringify(dependencies), taskId], (error, result) => {
     // Update task in the DB
     db.query(taskSql, [nameAndTitle, start, end, taskId], (error, result) => {
         if (error) {
