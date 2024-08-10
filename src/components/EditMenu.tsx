@@ -71,38 +71,38 @@ const EditMenu: React.FC<EditMenuProps> = ({ open, onClose, selectedTask, tasks,
   };
 
   const handleSave = () => {
-    // if (selectedTask) {
-    //   const updatedTask = { ...selectedTask, name: taskName, start: taskStart, end: taskEnd };
+    if (selectedTask) {
+      const updatedTask = { ...selectedTask, name: taskName, start: taskStart, end: taskEnd };
 
-    //   console.log('Preparing to update task:', updatedTask);
+      console.log('Preparing to update task:', updatedTask);
 
-    //   fetch(`/api/tasks/${selectedTask.id}`, {
-    //     method: 'PUT',
-    //     headers: {
-    //       'Content-Type': 'application/json',
-    //     },
-    //     body: JSON.stringify({
-    //       nameAndTitle: taskName,
-    //       start: taskStart,
-    //       end: taskEnd,
-    //       dependencies: selectedTask.dependencies || [],
-    //     }),
-    //   })
-    //       .then(response => {
-    //         if (!response.ok) {
-    //           throw new Error('Network response was not ok ' + response.statusText);
-    //         }
-    //         return response.json();
-    //       })
-    //       .then(result => {
-    //         console.log('Task update result:', result);
-    //         setTasks(tasks.map(task => task.id === selectedTask.id ? updatedTask : task));
-    //         onClose();
-    //       })
-    //       .catch(error => {
-    //         console.error('Error updating task:', error);
-    //       });
-    // }
+      fetch(`http://localhost:8080/api/tasks/${selectedTask.id}`, {
+        method: 'PUT',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          nameAndTitle: taskName,
+          start: taskStart,
+          end: taskEnd,
+          dependencies: selectedTask.dependencies || [],
+        }),
+      })
+          .then(response => {
+            if (!response.ok) {
+              throw new Error('Network response was not ok ' + response.statusText);
+            }
+            return response.json();
+          })
+          .then(result => {
+            console.log('Task update result:', result);
+            setTasks(tasks.map(task => task.id === selectedTask.id ? updatedTask : task));
+            onClose();
+          })
+          .catch(error => {
+            console.error('Error updating task:', error);
+          });
+    }
   };
 
   return (
