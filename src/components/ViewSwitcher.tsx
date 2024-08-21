@@ -5,6 +5,7 @@ import TextField from "@mui/material/TextField";
 import MenuItem from "@mui/material/MenuItem";
 import AddTask from "./AddTask";
 
+// Define the props interface for the ViewSwitcher component.
 interface ViewSwitcherProps {
   setIsChecked: (checked: boolean) => void;
   setView: (viewMode: ViewMode) => void;
@@ -14,6 +15,7 @@ interface ViewSwitcherProps {
   setTasks: (tasks: Task[]) => void;
 }
 
+// The ViewSwitcher component manages the task list visibility, view mode switching and adding new task.
 const ViewSwitcher: React.FC<ViewSwitcherProps> = ({
                                                      setIsChecked,
                                                      setView,
@@ -22,7 +24,8 @@ const ViewSwitcher: React.FC<ViewSwitcherProps> = ({
                                                      tasks,
                                                      setTasks,
                                                    }) => {
-  const viewsOptions = [
+    // Options for switching between different views (Day, Week, Month).
+    const viewsOptions = [
     {
       value: "Day",
       onChange: ViewMode.Day,
@@ -37,6 +40,7 @@ const ViewSwitcher: React.FC<ViewSwitcherProps> = ({
     },
   ];
 
+  // Handle changes to the view mode dropdown selection.
   const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     const selectedOption = viewsOptions.find(
         (option) => option.value === event.target.value
@@ -46,6 +50,7 @@ const ViewSwitcher: React.FC<ViewSwitcherProps> = ({
     }
   };
 
+  // Handle the addition of a new task to the task list.
   const handleTaskAdded = (newTask: Task) => {
     setTasks([...tasks, newTask]);
   };
@@ -57,6 +62,7 @@ const ViewSwitcher: React.FC<ViewSwitcherProps> = ({
           <div id="line"></div>
         </div>
         <div className="view-switcher">
+          {/* Toggle for showing or hiding the task list */}
           <div className="Switch">
             <label className="Switch_Toggle">
               <input
@@ -67,6 +73,7 @@ const ViewSwitcher: React.FC<ViewSwitcherProps> = ({
             </label>
             Show Task List
           </div>
+          {/* Dropdown menu for selecting the Gantt chart view mode */}
           <div className="textField-container">
             <TextField
                 id="outlined-select-view"
@@ -74,7 +81,7 @@ const ViewSwitcher: React.FC<ViewSwitcherProps> = ({
                 sx={{ minWidth: 150, margin: 5 }}
                 label="View options"
                 size="small"
-                value={view} // Set the value to selectedView state
+                value={view} 
                 onChange={handleChange}
             >
               {viewsOptions.map((option) => (
@@ -84,6 +91,7 @@ const ViewSwitcher: React.FC<ViewSwitcherProps> = ({
               ))}
             </TextField>
           </div>
+          {/* Component for adding a new task to the task list */}
           <AddTask onTaskAdded={handleTaskAdded} tasks={tasks} setTasks={setTasks} />
         </div>
       </div>

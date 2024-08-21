@@ -1,5 +1,6 @@
 import { Task } from "gantt-task-react";
 
+// Define the structure of a task as it is received from the server.
 interface ServerTask {
   id: string;
   nameAndTitle: string;
@@ -11,10 +12,11 @@ interface ServerTask {
   progress: number;
 }
 
+// Function to transform server data into the format required by the Gantt chart component.
 export const transformServerData = (serverData: ServerTask[]): Task[] => {
   return serverData.map(task => {
-    const startDate = task.start ? new Date(task.start) : new Date(); // Fallback to current date if start is undefined
-    const endDate = task.end ? new Date(task.end) : new Date(); // Fallback to current date if end is undefined
+    const startDate = task.start ? new Date(task.start) : new Date(); 
+    const endDate = task.end ? new Date(task.end) : new Date(); 
 
     return {
       id: task.id.toString(),
@@ -23,7 +25,7 @@ export const transformServerData = (serverData: ServerTask[]): Task[] => {
       end: endDate,
       type: "task", 
       progress: task.progress || 0,
-      dependencies: task.dependencies || [], // Handle dependencies correctly
+      dependencies: task.dependencies || [], 
       project: task.project.name,
       isDisabled: false,
       styles: {
@@ -34,6 +36,7 @@ export const transformServerData = (serverData: ServerTask[]): Task[] => {
   });
 };
 
+// Function to initialize tasks by fetching them from the server.
 export const initTasks = async (): Promise<Task[]> => {
   try {
     const response = await fetch('http://localhost:8080/api/tasks');
@@ -48,18 +51,6 @@ export const initTasks = async (): Promise<Task[]> => {
   }
 };
 
-export const getStartOrEndDate = (tasks: Task[], id: string): [Date, Date] => {
-  const task = tasks.filter(tsk => tsk.project === id);
-  let start = task[0].start;
-  let end = task[0].end;
-
-  task.forEach(t => {
-    if (start > t.start) start = t.start;
-    if (end < t.end) end = t.end;
-  });
-
-  return [start, end];
-};
 
 
 
