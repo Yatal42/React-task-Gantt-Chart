@@ -3,6 +3,7 @@ import "gantt-task-react/dist/index.css";
 import { ViewMode, Task } from "gantt-task-react";
 import TextField from "@mui/material/TextField";
 import MenuItem from "@mui/material/MenuItem";
+import AddTask from "./AddTask";
 
 interface ViewSwitcherProps {
   setIsChecked: (checked: boolean) => void;
@@ -11,7 +12,6 @@ interface ViewSwitcherProps {
   isChecked: boolean;
   tasks: Task[];
   setTasks: (tasks: Task[]) => void;
-  selectedTask: Task | null;
 }
 
 const ViewSwitcher: React.FC<ViewSwitcherProps> = ({
@@ -21,7 +21,6 @@ const ViewSwitcher: React.FC<ViewSwitcherProps> = ({
                                                      view,
                                                      tasks,
                                                      setTasks,
-                                                     selectedTask,
                                                    }) => {
   const viewsOptions = [
     {
@@ -45,6 +44,10 @@ const ViewSwitcher: React.FC<ViewSwitcherProps> = ({
     if (selectedOption) {
       setView(selectedOption.onChange);
     }
+  };
+
+  const handleTaskAdded = (newTask: Task) => {
+    setTasks([...tasks, newTask]);
   };
 
   return (
@@ -81,8 +84,7 @@ const ViewSwitcher: React.FC<ViewSwitcherProps> = ({
               ))}
             </TextField>
           </div>
-          <div className="edit-menu">
-          </div>
+          <AddTask onTaskAdded={handleTaskAdded} tasks={tasks} setTasks={setTasks} />
         </div>
       </div>
   );
