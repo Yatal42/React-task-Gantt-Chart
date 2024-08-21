@@ -6,6 +6,7 @@ import IconButton from "@mui/material/IconButton";
 import EditNoteOutlinedIcon from '@mui/icons-material/EditNoteOutlined';
 import EditMenu from './EditMenu';
 
+// Define the props interface for the GanttChart component.
 interface GanttChartProps {
   view: ViewMode;
   isChecked: boolean;
@@ -16,6 +17,7 @@ interface GanttChartProps {
   setSelectedTask: (task: Task | null) => void; 
 }
 
+// The GanttChart component displays a Gantt chart with tasks and allows editing of selected tasks.
 const GanttChart: React.FC<GanttChartProps> = ({
   view,
   isChecked,
@@ -25,14 +27,16 @@ const GanttChart: React.FC<GanttChartProps> = ({
   selectedTask,
   setSelectedTask,
 }) => {
+  // Reference to the Gantt chart container
   const ganttRef = useRef<HTMLDivElement>(null);
+  // Width of the task list cells
   const [listCellWidth, setListCellWidth] = useState<string>("");
-  const [colswidth, setColsWidth] = useState(() =>
-    window.innerWidth <= 1150 ? 100 : 165
-  );
+  // Column width based on screen size
+  const [colswidth, setColsWidth] = useState(() => window.innerWidth <= 1150 ? 100 : 165);
+  // State to control the visibility of the edit menu
   const [editMenuOpen, setEditMenuOpen] = useState<boolean>(false);
 
-  // Fetch tasks when component mounts
+  // Fetch initial tasks when the component mounts
   useEffect(() => {
     const fetchTasks = async () => {
       const initTasksGantt = await initTasks();
@@ -41,7 +45,7 @@ const GanttChart: React.FC<GanttChartProps> = ({
     fetchTasks();
   }, [setTasks]);
 
-  // Handle task progress change
+  // Handle progress change for tasks and update the server
   const progressChangeHandler = useCallback(
     (task: Task) => {
       const newTasks = tasks.map((t) => (t.id === task.id ? { ...task } : t));
@@ -52,7 +56,7 @@ const GanttChart: React.FC<GanttChartProps> = ({
     [tasks, setTasks]
   );
 
-  // Update the task on the server
+  // Update a specific task on the server
   const updateTaskOnServer = async (task: Task) => {
     try {
       const formattedStart = new Date(task.start).toISOString().split('T')[0];
@@ -90,7 +94,7 @@ const GanttChart: React.FC<GanttChartProps> = ({
     }
   };
 
-  // Handle window resizing for list cell width
+  // Handle window resizing to adjust list cell width and column width
   useEffect(() => {
     const handleResize = () => {
       if (isChecked) {
@@ -104,7 +108,7 @@ const GanttChart: React.FC<GanttChartProps> = ({
     };
   }, [isChecked]);
 
-  // Open the edit menu for a selected task
+  // Open the edit menu for the selected task
   const openEditMenu = (task: Task) => {
     setSelectedTask(task);
     setEditMenuOpen(true);
@@ -115,14 +119,14 @@ const GanttChart: React.FC<GanttChartProps> = ({
     setEditMenuOpen(false);
   };
 
-  // Ensure valid dates for tasks
+  // Ensure all tasks have valid start and end dates
   const validTasks = tasks.map(task => ({
     ...task,
     start: task.start || new Date(), 
     end: task.end || new Date(),     
   }));
 
-  // Render the Gantt chart and edit menu
+  // Render a loading message if there are no tasks to display yet
   if (validTasks.length === 0) {
     return <div>Loading...</div>;
   }
@@ -130,6 +134,7 @@ const GanttChart: React.FC<GanttChartProps> = ({
   return (
     <div className="gantt-container" ref={ganttRef}>
       <div className="icon-container">
+        {/* Render edit icons for each task */}
         {validTasks.map((task) => (
           <IconButton
             key={task.id}
@@ -148,6 +153,7 @@ const GanttChart: React.FC<GanttChartProps> = ({
         ))}
       </div>
       <div className="gantt">
+        {/* Render the Gantt chart */}
         <Gantt
           tasks={validTasks}
           viewMode={view}
@@ -166,6 +172,7 @@ const GanttChart: React.FC<GanttChartProps> = ({
           rowHeight={40}
         />
       </div>
+      {/* Render the edit menu for the selected task */}
       <EditMenu
         open={editMenuOpen}
         onClose={closeEditMenu}

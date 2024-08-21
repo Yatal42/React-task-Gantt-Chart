@@ -9,7 +9,7 @@ const port = 8080;
 app.use(cors());
 app.use(bodyParser.json());
 
-// Create a MySQL connection pool
+// Create a MySQL connection pool to manage database connections
 const db = mysql.createPool({
     host: '185.60.170.80',
     user: 'sandbox_user',
@@ -17,6 +17,7 @@ const db = mysql.createPool({
     database: 'sandbox'
 });
 
+// GET endpoint to retrieve tasks from the database
 app.get('/api/tasks', (req, res) => {
     const sql = `
         SELECT task.tid, project.pid, project.title AS project_title, project.start AS start_date, task.deadline, task.title AS task_title, task.stage, task.dependencies, task.progress
@@ -29,6 +30,7 @@ app.get('/api/tasks', (req, res) => {
             return res.status(500).send(error);
         }
 
+        // Transform the database result into the required format
         const tasks = results.map((task) => ({
             id: task.tid,
             project: {
@@ -39,7 +41,7 @@ app.get('/api/tasks', (req, res) => {
             end: task.deadline,
             nameAndTitle: task.task_title,
             type: 'task',
-            dependencies: JSON.parse(task.dependencies || '[]'), // Handle NULL by parsing as an empty array
+            dependencies: JSON.parse(task.dependencies || '[]'),
             progress: task.progress
         }));
 
@@ -48,7 +50,7 @@ app.get('/api/tasks', (req, res) => {
     });
 });
 
-// POST endpoint to add a new task
+// POST endpoint to add a new task to the database
 app.post('/api/tasks', (req, res) => {
     const { id, nameAndTitle, start, end, pid, descriptionText, dependencies } = req.body;
 
@@ -76,6 +78,7 @@ app.post('/api/tasks', (req, res) => {
     });
 });
 
+// PUT endpoint to update an existing task in the database
 app.put('/api/tasks/:id', (req, res) => {
     const taskId = req.params.id;
     const { nameAndTitle, start, end, dependencies, progress } = req.body;
@@ -116,6 +119,7 @@ app.put('/api/tasks/:id', (req, res) => {
     });
 });
 
+// DELETE endpoint to remove a task from the database
 app.delete('/api/tasks/:id', (req, res) => {
     const taskId = req.params.id;
 
@@ -135,7 +139,7 @@ app.delete('/api/tasks/:id', (req, res) => {
     });
 });
 
-
+// Start the server and listen on the specified port
 app.listen(port, () => {
     console.log(`Server running on port ${port}`);
 });
