@@ -31,7 +31,6 @@ function App() {
                 isChecked={isChecked}
                 tasks={tasks}
                 setTasks={setTasks}
-                selectedTask={selectedTask}
             />
             <div>
                 <GanttChart
@@ -40,6 +39,8 @@ function App() {
                     setTasks={setTasks}
                     tasks={tasks}
                     handleSelect={handleSelect}
+                    selectedTask={selectedTask}
+                    setSelectedTask={setSelectedTask} 
                 />
             </div>
         </div>

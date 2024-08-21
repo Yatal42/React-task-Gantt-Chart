@@ -7,24 +7,31 @@ interface ServerTask {
   end: string;
   type: string;
   project: { name: string };
+  dependencies?: string[];
+  progress: number;
 }
 
 export const transformServerData = (serverData: ServerTask[]): Task[] => {
-  return serverData.map(task => ({
-    id: task.id.toString(),
-    name: task.nameAndTitle,
-    start: task.start ? new Date(task.start) : new Date(),
-    end: new Date(task.end),
-    type: "task", 
-    progress: 0,
-    dependencies: [],
-    project: task.project.name,
-    isDisabled: false,
-    styles: {
-      progressColor: "#176B87",
-      progressSelectedColor: "#176B87",
-    }
-  }));
+  return serverData.map(task => {
+    const startDate = task.start ? new Date(task.start) : new Date(); // Fallback to current date if start is undefined
+    const endDate = task.end ? new Date(task.end) : new Date(); // Fallback to current date if end is undefined
+
+    return {
+      id: task.id.toString(),
+      name: task.nameAndTitle,
+      start: startDate,
+      end: endDate,
+      type: "task", 
+      progress: task.progress || 0,
+      dependencies: task.dependencies || [], // Handle dependencies correctly
+      project: task.project.name,
+      isDisabled: false,
+      styles: {
+        progressColor: "#176B87",
+        progressSelectedColor: "#176B87",
+      }
+    };
+  });
 };
 
 export const initTasks = async (): Promise<Task[]> => {

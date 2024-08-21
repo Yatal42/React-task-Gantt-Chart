@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useRef, useCallback } from "react";
 import { Gantt, Task, ViewMode } from "gantt-task-react";
 import "gantt-task-react/dist/index.css";
-import { initTasks, getStartOrEndDate } from "../Tasks";
+import { initTasks} from "../Tasks";
 import IconButton from "@mui/material/IconButton";
 import EditNoteOutlinedIcon from '@mui/icons-material/EditNoteOutlined';
 import EditMenu from './EditMenu';
@@ -12,6 +12,8 @@ interface GanttChartProps {
   tasks: Task[];
   setTasks: (tasks: Task[]) => void;
   handleSelect: (task: Task, isSelected: boolean) => void;
+  selectedTask: Task | null; 
+  setSelectedTask: (task: Task | null) => void; 
 }
 
 const GanttChart: React.FC<GanttChartProps> = ({
@@ -19,16 +21,18 @@ const GanttChart: React.FC<GanttChartProps> = ({
   isChecked,
   tasks,
   setTasks,
-  handleSelect
+  handleSelect,
+  selectedTask,
+  setSelectedTask,
 }) => {
   const ganttRef = useRef<HTMLDivElement>(null);
   const [listCellWidth, setListCellWidth] = useState<string>("");
   const [colswidth, setColsWidth] = useState(() =>
     window.innerWidth <= 1150 ? 100 : 165
   );
-  const [selectedTask, setSelectedTask] = useState<Task | null>(null);
   const [editMenuOpen, setEditMenuOpen] = useState<boolean>(false);
 
+  // Fetch tasks when component mounts
   useEffect(() => {
     const fetchTasks = async () => {
       const initTasksGantt = await initTasks();
@@ -37,38 +41,56 @@ const GanttChart: React.FC<GanttChartProps> = ({
     fetchTasks();
   }, [setTasks]);
 
+  // Handle task progress change
   const progressChangeHandler = useCallback(
     (task: Task) => {
       const newTasks = tasks.map((t) => (t.id === task.id ? { ...task } : t));
       setTasks([...newTasks]);
-      console.log("On progress change" + task.id);
+      updateTaskOnServer(task);
+      console.log("On progress change: " + task.id+" "+ task.progress);
     },
     [tasks, setTasks]
   );
 
-  const handleTaskChange = useCallback(
-    (task: Task) => {
-      console.log("On date change Id:" + task.id);
-      let newTasks = tasks.map((t) => (t.id === task.id ? { ...task } : t));
-      if (task.project) {
-        const [start, end] = getStartOrEndDate(newTasks, task.project);
-        const projectIndex = newTasks.findIndex((t) => t.id === task.project);
-        if (projectIndex !== -1) {
-          const project = newTasks[projectIndex];
-          if (
-            project.start.getTime() !== start.getTime() ||
-            project.end.getTime() !== end.getTime()
-          ) {
-            const changedProject = { ...project, start, end };
-            newTasks[projectIndex] = changedProject;
-          }
-        }
+  // Update the task on the server
+  const updateTaskOnServer = async (task: Task) => {
+    try {
+      const formattedStart = new Date(task.start).toISOString().split('T')[0];
+      const formattedEnd = new Date(task.end).toISOString().split('T')[0];
+
+      const response = await fetch(`http://localhost:8080/api/tasks/${task.id}`, {
+        method: 'PUT',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          nameAndTitle: task.name, 
+          start: formattedStart,
+          end: formattedEnd,
+          dependencies: task.dependencies || [], 
+          progress: task.progress
+        }),
+      });
+
+      if (!response.ok) {
+        const errorText = await response.text(); 
+        console.error('Server error response:', errorText);
+        throw new Error(`Server responded with status: ${response.status}`);
       }
-      setTasks([...newTasks]);
-    },
-    [tasks, setTasks]
-  );
 
+      const data = await response.json();
+      console.log('Task updated on server:', data);
+
+    } catch (error) {
+      if (error instanceof Error) {
+        console.error('Error updating task on server:', error.message);
+      } else {
+        console.error('Unknown error updating task on server:', error);
+      }
+    }
+  };
+
+  // Handle window resizing for list cell width
   useEffect(() => {
     const handleResize = () => {
       if (isChecked) {
@@ -82,23 +104,33 @@ const GanttChart: React.FC<GanttChartProps> = ({
     };
   }, [isChecked]);
 
+  // Open the edit menu for a selected task
   const openEditMenu = (task: Task) => {
     setSelectedTask(task);
     setEditMenuOpen(true);
   };
 
+  // Close the edit menu
   const closeEditMenu = () => {
     setEditMenuOpen(false);
   };
 
-  if (tasks.length === 0) {
+  // Ensure valid dates for tasks
+  const validTasks = tasks.map(task => ({
+    ...task,
+    start: task.start || new Date(), 
+    end: task.end || new Date(),     
+  }));
+
+  // Render the Gantt chart and edit menu
+  if (validTasks.length === 0) {
     return <div>Loading...</div>;
   }
 
   return (
     <div className="gantt-container" ref={ganttRef}>
       <div className="icon-container">
-        {tasks.map((task) => (
+        {validTasks.map((task) => (
           <IconButton
             key={task.id}
             style={{
@@ -117,9 +149,8 @@ const GanttChart: React.FC<GanttChartProps> = ({
       </div>
       <div className="gantt">
         <Gantt
-          tasks={tasks}
+          tasks={validTasks}
           viewMode={view}
-          onDateChange={handleTaskChange}
           onProgressChange={progressChangeHandler}
           onSelect={handleSelect}
           arrowColor="#64CCC5"
@@ -129,7 +160,7 @@ const GanttChart: React.FC<GanttChartProps> = ({
             isChecked ? (window.innerWidth <= 1150 ? "100px" : "160px") : ""
           }
           fontSize={
-            isChecked ? (window.innerWidth <= 1150 ? "0.6rem" : "1rem") : "1rem"
+            isChecked ? (window.innerWidth <= 1150 ? "0.6rem" : "0.7rem") : "0.7rem"
           }
           columnWidth={colswidth}
           rowHeight={40}
@@ -139,7 +170,7 @@ const GanttChart: React.FC<GanttChartProps> = ({
         open={editMenuOpen}
         onClose={closeEditMenu}
         selectedTask={selectedTask}
-        tasks={tasks}
+        tasks={validTasks}
         setTasks={setTasks}
       />
     </div>
