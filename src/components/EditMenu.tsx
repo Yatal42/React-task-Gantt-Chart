@@ -26,6 +26,7 @@ const BootstrapDialog = styled(Dialog)(({ theme }) => ({
   },
 }));
 
+// Custom styled Button component with dynamic font size and width based on screen size
 const StyledButton = styled(Button)<{ fontSize: string, buttonWidth: string }>(({ fontSize, buttonWidth }) => ({
   fontSize: fontSize,
   padding: '5px',
@@ -50,6 +51,7 @@ const EditMenu: React.FC<EditMenuProps> = ({ open, onClose, selectedTask, tasks,
   const [dependencyDialogOpen, setDependencyDialogOpen] = useState(false);
   const [selectedDependencies, setSelectedDependencies] = useState<string[]>([]);
 
+  // Detect if the screen is small to adjust styles dynamically
   const isSmallScreen = useMediaQuery('(max-width:1150px)');
   const titleFontSize = isSmallScreen ? '14px' : '24px';
   const contentFontSize = isSmallScreen ? '11px' : '16px';
