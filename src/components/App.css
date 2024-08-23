@@ -16,45 +16,29 @@
   display: block;
 }
 
+.view-switcher {
+  font-family: Montserrat, sans-serif;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin: 30px;
+  width: 110%;
+  gap: 1px;
+  height: 60px;
+  border-radius: 20px;
+  border: 1px solid #176B87;
+  box-shadow: 0 15px 75px 0 rgba(23, 107, 135, 0.17);
+}
+
 .button {
   border-radius: 24px;
+  font-size: 100%;
   height: 40px;
-  margin: 10px;
   width: 120px;
   background: #176B87;
   color: white;
-  font-size: 80%;
   border: none;
   cursor: pointer;
-  text-align: center;
-}
-
-@media only screen and (max-width: 1150px) {
-  #title {
-    font-size: 45px;
-    text-align: center;
-    width: 100%;
-  }
-
-  #line {
-    width: 100%;
-    margin: 0 0 20px 0;
-  }
-
-  .gantt-container {
-    width: 70%;
-  }
-}
-
-.view-switcher {
-  display: flex;
-  justify-content:space-between;
-  align-items: center;
-  height: 80px;
-}
-
-.heading{
-  width: fit-content;
   text-align: center;
 }
 
@@ -74,6 +58,15 @@ body {
   line-height: 1.5;
   background-color: #fff;
 }
+
+.heading{
+  width: fit-content;
+  text-align: center;
+}
+
+
+
+
 
 .icon-container{
   display: flex;
@@ -102,3 +95,48 @@ body {
   padding-left: 0px;
   max-width: 1200px;
 }
+
+
+@media only screen and (max-width: 1150px) {
+  #title {
+    font-size: 30px;
+    width: 100%;
+  }
+
+  #line {
+    width: 100%;
+  }
+
+  .gantt-container {
+    width: 80%;
+  }
+
+  .button {
+    height: 24px;
+    width: 80px;
+    font-size: 0.6rem;
+  }
+
+  .Switch{
+    font-size: 0.6rem;
+  }
+
+  .Switch input[type="checkbox"] {
+    width: 8px;
+    height: 8px;
+  }
+
+  .view-switcher {
+    width: 90%;
+    height: 35px;
+    display: flex;
+    /*justify-content: center;*/
+    /*align-items: center;*/
+  }
+
+  .textField-container {
+    transform: scale(0.6);
+    transform-origin: center;
+  }
+}
+

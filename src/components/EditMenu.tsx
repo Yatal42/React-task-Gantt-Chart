@@ -11,7 +11,10 @@ import TextField from '@mui/material/TextField';
 import Typography from '@mui/material/Typography';
 import Checkbox from '@mui/material/Checkbox';
 import FormControlLabel from '@mui/material/FormControlLabel';
+import useMediaQuery from '@mui/material/useMediaQuery';
 import { Task } from "gantt-task-react";
+import Box from '@mui/material/Box';
+
 
 // Custom styled Dialog component
 const BootstrapDialog = styled(Dialog)(({ theme }) => ({
@@ -21,6 +24,12 @@ const BootstrapDialog = styled(Dialog)(({ theme }) => ({
   '& .MuiDialogActions-root': {
     padding: theme.spacing(2),
   },
+}));
+
+const StyledButton = styled(Button)<{ fontSize: string, buttonWidth: string }>(({ fontSize, buttonWidth }) => ({
+  fontSize: fontSize,
+  padding: '5px',
+  width: buttonWidth,
 }));
 
 // Define the props interface for the EditMenu component
@@ -40,6 +49,15 @@ const EditMenu: React.FC<EditMenuProps> = ({ open, onClose, selectedTask, tasks,
   const [taskEnd, setTaskEnd] = useState(new Date());
   const [dependencyDialogOpen, setDependencyDialogOpen] = useState(false);
   const [selectedDependencies, setSelectedDependencies] = useState<string[]>([]);
+
+  const isSmallScreen = useMediaQuery('(max-width:1150px)');
+  const titleFontSize = isSmallScreen ? '14px' : '24px';
+  const contentFontSize = isSmallScreen ? '11px' : '16px';
+  const textFieldHeight = isSmallScreen ? '30px' : '56px';
+  const contentWidth = isSmallScreen ? '90%' : '100%';
+  const buttonFontSize = isSmallScreen ? '10px' : '14px';
+  const buttonWidth = isSmallScreen ? '30%' : '33.33%';
+
 
   // Update state when a task is selected
   useEffect(() => {
@@ -138,7 +156,7 @@ const EditMenu: React.FC<EditMenuProps> = ({ open, onClose, selectedTask, tasks,
 
   return (
       <BootstrapDialog onClose={onClose} aria-labelledby="customized-dialog-title" open={open}>
-        <DialogTitle sx={{ m: 0, p: 2 }}>Edit selected task</DialogTitle>
+        <DialogTitle sx={{ m: 0, p: 1, fontSize: titleFontSize}}>Edit selected task</DialogTitle>
         <IconButton
             aria-label="close"
             onClick={onClose}
@@ -151,7 +169,7 @@ const EditMenu: React.FC<EditMenuProps> = ({ open, onClose, selectedTask, tasks,
           <CloseIcon />
         </IconButton>
         <DialogContent dividers>
-          <Typography gutterBottom>
+          <Typography gutterBottom sx={{ fontSize: contentFontSize }}>
             Edit task details below.
           </Typography>
           {/* Text field for task name can be edited if needed */}
@@ -161,6 +179,17 @@ const EditMenu: React.FC<EditMenuProps> = ({ open, onClose, selectedTask, tasks,
               onChange={(e) => setTaskName(e.target.value)}
               fullWidth
               margin="normal"
+              InputLabelProps={{
+                shrink: true,
+                style: { fontSize: contentFontSize }
+              }}
+              InputProps={{
+                  style: { height: textFieldHeight, fontSize: contentFontSize }
+              }}
+              sx={{
+                  width: '100%',
+                  mb: isSmallScreen ? 0.5 : 2
+              }}
           />
           {/* Date picker for end date can be re-enabled if needed */}
           <TextField
@@ -172,14 +201,45 @@ const EditMenu: React.FC<EditMenuProps> = ({ open, onClose, selectedTask, tasks,
               margin="normal"
               InputLabelProps={{
                 shrink: true,
+                style: { fontSize: contentFontSize }
+              }}
+              InputProps={{
+                  style: { height: textFieldHeight, fontSize: contentFontSize }
+              }}
+              sx={{
+                  width: '100%',
+                  mb: isSmallScreen ? 0.5 : 2
               }}
           />
         </DialogContent>
-        <DialogActions sx={{ margin: 0, justifyContent: 'space-between' }}>
-          <Button text={"Add dependency"} onClick={handleEditDependencies} />
-          <Button text={"Delete this task"} onClick={handleDelete} />
-          <Button text={"Save"} onClick={handleSave} />
-        </DialogActions>
+        <DialogActions>
+                <Box sx={{
+                    display: 'flex',
+                    width: '100%',
+                    margin: '0 auto',
+                    gap: isSmallScreen ? `${14.5}%` : `${16}%`,
+                    alignItems: isSmallScreen ? 'center' : 'initial',
+                }}>
+                    <StyledButton
+                        text="Add dependency"
+                        onClick={handleEditDependencies}
+                        fontSize={buttonFontSize}
+                        buttonWidth={buttonWidth}
+                    />
+                    <StyledButton
+                        text="Delete this task"
+                        onClick={handleDelete}
+                        fontSize={buttonFontSize}
+                        buttonWidth={buttonWidth}
+                    />
+                    <StyledButton
+                        text="Save"
+                        onClick={handleSave}
+                        fontSize={buttonFontSize}
+                        buttonWidth={buttonWidth}
+                    />
+                </Box>
+            </DialogActions>
         {/* Dependency Dialog */}
         <Dialog open={dependencyDialogOpen} onClose={() => setDependencyDialogOpen(false)}>
           <DialogTitle>Select Dependencies</DialogTitle>
