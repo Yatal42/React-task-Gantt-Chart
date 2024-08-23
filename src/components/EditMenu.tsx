@@ -54,10 +54,8 @@ const EditMenu: React.FC<EditMenuProps> = ({ open, onClose, selectedTask, tasks,
   const titleFontSize = isSmallScreen ? '14px' : '24px';
   const contentFontSize = isSmallScreen ? '11px' : '16px';
   const textFieldHeight = isSmallScreen ? '30px' : '56px';
-  const contentWidth = isSmallScreen ? '90%' : '100%';
   const buttonFontSize = isSmallScreen ? '10px' : '14px';
   const buttonWidth = isSmallScreen ? '30%' : '33.33%';
-
 
   // Update state when a task is selected
   useEffect(() => {
