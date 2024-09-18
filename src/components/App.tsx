@@ -3,7 +3,7 @@ import { ViewMode, Task } from "gantt-task-react";
 import "gantt-task-react/dist/index.css";
 import "./App.css";
 import GanttChart from "./GanttChart";
-import ViewSwitcher from "./ViewSwitcher";
+import Heading from "./Heading";
 
 // The main App component, which manages the state and layout of the Gantt chart and view switcher.
 function App() {
@@ -65,7 +65,7 @@ function App() {
     return (
         <div className="flex-container">
             {/* ViewSwitcher component manages the view mode, task list settings, and adding new tasks */}
-            <ViewSwitcher
+            <Heading
                 setIsChecked={setIsChecked}
                 setView={setView}
                 view={view}
