@@ -29,8 +29,8 @@ export const transformServerData = (serverData: ServerTask[]): Task[] => {
       project: task.project.name,
       isDisabled: false,
       styles: {
-        progressColor: "#176B87",
-        progressSelectedColor: "#176B87",
+        progressColor: "#3e2d47",
+        progressSelectedColor: "#3e2d47",
       }
     };
   });
