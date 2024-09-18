@@ -15,9 +15,9 @@ interface HeadingProps {
 const Heading: React.FC<HeadingProps>=({setIsChecked, setView, isChecked, view, tasks, setTasks}) =>{
   return (
     <div className="center-heading-container">
-      <div className="heading-title">
-        <h1 id="title">Task Gantt-Chart</h1>
-        <div id="line"></div>
+        <div className="heading-title">
+            <h1 id="title">Task Gantt-Chart</h1>
+            <div id="line"></div>
         </div>
         <ToolBar 
             setIsChecked={setIsChecked}
