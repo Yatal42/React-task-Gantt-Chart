@@ -4,7 +4,7 @@ body {
 }
 
 #title {
-  font-size: 35px;
+  font-size: 30px;
   color: #3e2d47;
   font-weight: bold;
   margin-bottom: 0;
@@ -40,7 +40,7 @@ body {
   align-items: center;
   margin-bottom: 20px;
   margin-top: 20px;
-  width: 60%;
+  width: 45%;
   height:65px;
   padding-left: 15px;
   border-radius: 5px;
@@ -82,7 +82,7 @@ body {
 .gantt-container {
   display:flex;
   justify-content:left;
-  width: 60%;
+  width: 95%;
   border-radius: 5px;
   border: 1px solid #3e2d47;
   box-shadow: 0 15px 35px 0 #a99d9f;
