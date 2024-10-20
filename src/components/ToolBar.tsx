@@ -6,25 +6,23 @@ import MenuItem from "@mui/material/MenuItem";
 import AddTask from "./AddTask";
 
 interface ToolBarProps {
-    setIsChecked: (checked: boolean) => void; // Function to set the checked state of the task list toggle
-    setView: (viewMode: ViewMode) => void; // Function to set the current view mode (Day, Week, Month)
-    view: ViewMode; // Current view mode of the Gantt chart
-    isChecked: boolean; // State to indicate if the task list is visible
-    tasks: Task[]; // Array of tasks in the Gantt chart
-    setTasks: (tasks: Task[]) => void; // Function to update the tasks array
+    setIsChecked: (checked: boolean) => void; 
+    setView: (viewMode: ViewMode) => void; 
+    view: ViewMode; 
+    isChecked: boolean; 
+    tasks: Task[];
+    setTasks: (tasks: Task[]) => void; 
 }
 
 const ToolBar: React.FC<ToolBarProps>=({setIsChecked, setView, isChecked, view, tasks, setTasks}) =>{
     const prevWidthRef = useRef(window.innerWidth);
 
-    // useEffect to handle window resize events and update isWideScreen state accordingly
     useEffect(() => {
       const handleResize = () => {
         const currentWidth = window.innerWidth;
         const prevWidth = prevWidthRef.current;
         const newIsWideScreen = currentWidth > 1150;
   
-        // Update isWideScreen state when crossing the 1150px threshold
         if (
           (prevWidth <= 1150 && currentWidth > 1150) ||
           (prevWidth > 1150 && currentWidth <= 1150)
@@ -32,14 +30,11 @@ const ToolBar: React.FC<ToolBarProps>=({setIsChecked, setView, isChecked, view, 
           setIsWideScreen(newIsWideScreen);
         }
   
-        // Update the ref with the current width
         prevWidthRef.current = currentWidth;
       };
   
-      // Add event listener for window resize
       window.addEventListener("resize", handleResize);
   
-      // Cleanup event listener on component unmount
       return () => {
         window.removeEventListener("resize", handleResize);
       };
@@ -52,27 +47,23 @@ const ToolBar: React.FC<ToolBarProps>=({setIsChecked, setView, isChecked, view, 
         { value: "Week", onChange: ViewMode.Week },
         { value: "Month", onChange: ViewMode.Month },];
     
-    // Handle changes to the view mode dropdown selection.
     const handleViewChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     const selectedOption = viewsOptions.find((option) => option.value === event.target.value);
     if (selectedOption) 
     {
-        setView(selectedOption.onChange); // Update the view mode in the parent component
+        setView(selectedOption.onChange); 
     }};
 
-    // Handle changes to the task list visibility toggle.
     const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    setIsChecked(event.target.checked); // Update the isChecked state in the parent component
+    setIsChecked(event.target.checked);
     };
 
-    // Handle the addition of a new task to the task list.
     const handleTaskAdded = (newTask: Task) => {
     setTasks([...tasks, newTask]); 
     };
 
     return(
     <div className="tool-bar">
-    {/* Toggle for showing or hiding the task list */}
         <div className="Switch">
             <label className="Switch_Toggle">
                 <input
@@ -82,7 +73,6 @@ const ToolBar: React.FC<ToolBarProps>=({setIsChecked, setView, isChecked, view, 
             </label>
         Show Task List
         </div>
-        {/* Dropdown menu for selecting the Gantt chart view mode */}
         <div
             className="textField-container frame-size"
             style={{
@@ -119,7 +109,6 @@ const ToolBar: React.FC<ToolBarProps>=({setIsChecked, setView, isChecked, view, 
             marginLeft: isWideScreen ? "50px" : "10px",
             marginTop: "0",
             }}>
-            {/* Component for adding a new task to the task list */}
             <AddTask
                 onTaskAdded={handleTaskAdded}
                 tasks={tasks}
