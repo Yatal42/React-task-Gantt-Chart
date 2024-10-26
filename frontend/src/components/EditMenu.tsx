@@ -87,44 +87,50 @@ const EditMenu: React.FC<EditMenuProps> = ({ open, onClose, selectedTask, tasks,
     });
   };
 
-  // Save the updated task details
-  const handleSave = () => {
-    if (selectedTask) {
+// Save the updated task details
+const handleSave = () => {
+  if (selectedTask) {
       const updatedTask = { 
-        ...selectedTask, 
-        name: taskName, 
-        start: taskStart, 
-        end: taskEnd,
-        dependencies: selectedDependencies 
-      };
-
-      fetch(`http://localhost:8080/api/tasks/${selectedTask.id}`, {
-        method: 'PUT',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({
-          nameAndTitle: taskName,
-          start: taskStart,
+          ...selectedTask, 
+          name: taskName, 
+          start: taskStart, 
           end: taskEnd,
           dependencies: selectedDependencies,
-        }),
+          progress: selectedTask.progress // Ensure progress is included
+      };
+
+      // Format dates to 'YYYY-MM-DD'
+      const formattedStart = taskStart.toISOString().split('T')[0];
+      const formattedEnd = taskEnd.toISOString().split('T')[0];
+
+      fetch(`http://localhost:8080/api/tasks/${selectedTask.id}`, {
+          method: 'PUT',
+          headers: {
+              'Content-Type': 'application/json',
+          },
+          body: JSON.stringify({
+              nameAndTitle: taskName,
+              start: formattedStart,
+              end: formattedEnd,
+              dependencies: selectedDependencies,
+              progress: selectedTask.progress // Include progress
+          }),
       })
       .then(response => {
-        if (!response.ok) {
-          throw new Error('Error updating task');
-        }
-        return response.json();
+          if (!response.ok) {
+              throw new Error('Error updating task');
+          }
+          return response.json();
       })
       .then(result => {
-        setTasks(tasks.map(task => task.id === selectedTask.id ? updatedTask : task));
-        onClose();
+          setTasks(tasks.map(task => task.id === selectedTask.id ? updatedTask : task));
+          onClose();
       })
       .catch(error => {
-        console.error('Error updating task:', error);
+          console.error('Error updating task:', error);
       });
-    }
-  };
+  }
+};
 
   // Delete the selected task
   const handleDelete = () => {
@@ -221,7 +227,7 @@ const EditMenu: React.FC<EditMenuProps> = ({ open, onClose, selectedTask, tasks,
                     alignItems: isSmallScreen ? 'center' : 'initial',
                 }}>
                     <StyledButton
-                        text="Add dependency"
+                        text="Edit dependencies"
                         onClick={handleEditDependencies}
                         fontSize={buttonFontSize}
                         buttonWidth={buttonWidth}
