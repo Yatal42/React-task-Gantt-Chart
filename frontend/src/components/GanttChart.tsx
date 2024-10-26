@@ -27,7 +27,7 @@ const GanttChart: React.FC<GanttChartProps> = ({
 }) => {
   const ganttRef = useRef<HTMLDivElement>(null);
   const [listCellWidth, setListCellWidth] = useState<string>("");
-  const [colswidth, setColsWidth] = useState(() => window.innerWidth <= 1150 ? 100 : 165);
+  const [colswidth, setColsWidth] = useState(() => window.innerWidth <= 1150 ? 80 : 100);
   const [editMenuOpen, setEditMenuOpen] = useState<boolean>(false);
 
   useEffect(() => {
@@ -143,7 +143,7 @@ const GanttChart: React.FC<GanttChartProps> = ({
           arrowColor="#a99d9f"
           barFill={55}
           fontFamily="Gill Sans"
-          listCellWidth={isChecked ? (window.innerWidth <= 1150 ? "100px" : "160px") : ""}
+          listCellWidth={isChecked ? (window.innerWidth <= 1150 ? "85px" : "100px") : ""}
           fontSize={isChecked ? (window.innerWidth <= 1150 ? "0.6rem" : "0.7rem") : "0.7rem"}
           columnWidth={colswidth}
           rowHeight={40}

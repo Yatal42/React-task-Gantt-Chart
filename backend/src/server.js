@@ -1,26 +1,49 @@
+// src/server.js
+
+// Load environment variables from .env file
+require('dotenv').config();
+
 const express = require('express');
-const bodyParser = require('body-parser');
 const cors = require('cors');
-const mysql = require('mysql');
+const mysql = require('mysql2'); // השתמש ב-mysql2
 
 const app = express();
-const port = 8080;
+const port = process.env.PORT || 8080;
 
 app.use(cors());
-app.use(bodyParser.json());
+app.use(express.json()); // השתמש ב-express.json() במקום body-parser
+
+// Add debugging logs to verify environment variables
+console.log('Environment Variables:');
+console.log('DB_HOST:', process.env.DB_HOST);
+console.log('DB_USER:', process.env.DB_USER);
+// console.log('DB_PASSWORD:', process.env.DB_PASSWORD); // Uncomment only for debugging, avoid in production
+console.log('DB_NAME:', process.env.DB_NAME);
+console.log('PORT:', process.env.PORT);
 
 // Create a MySQL connection pool to manage database connections
 const db = mysql.createPool({
-    host: '185.60.170.80',
-    user: 'sandbox_user',
-    password: '123123',
-    database: 'sandbox'
+    connectionLimit: 10, // Adjust as needed
+    host: process.env.DB_HOST,
+    user: process.env.DB_USER,
+    password: process.env.DB_PASSWORD,
+    database: process.env.DB_NAME
+});
+
+// Test database connection
+db.getConnection((err, connection) => {
+    if (err) {
+        console.error('Error connecting to the database:', err);
+        process.exit(1); // Exit process with failure
+    }
+    console.log('Connected to the MySQL database.');
+    connection.release();
 });
 
 // GET endpoint to retrieve tasks from the database
 app.get('/api/tasks', (req, res) => {
     const sql = `
-        SELECT task.tid, project.pid, project.title AS project_title, project.start AS start_date, task.deadline, task.title AS task_title, task.stage, task.dependencies, task.progress
+        SELECT task.tid, project.pid, project.title AS project_title, project.start AS start_date, task.deadline, task.title AS task_title, task.dependencies, task.progress
         FROM task
         LEFT JOIN project ON task.pid = project.pid;
     `;
@@ -31,19 +54,38 @@ app.get('/api/tasks', (req, res) => {
         }
 
         // Transform the database result into the required format
-        const tasks = results.map((task) => ({
-            id: task.tid,
-            project: {
-                id: task.pid,
-                name: task.project_title,
-            },
-            start: task.start_date,
-            end: task.deadline,
-            nameAndTitle: task.task_title,
-            type: 'task',
-            dependencies: JSON.parse(task.dependencies || '[]'),
-            progress: task.progress
-        }));
+        const tasks = results.map((task) => {
+            console.log(`Task ID: ${task.tid}, Dependencies: "${task.dependencies}", Progress: ${task.progress}, Type: ${typeof task.dependencies}`);
+
+            let parsedDependencies = [];
+            if (task.dependencies && typeof task.dependencies === 'string') {
+                try {
+                    parsedDependencies = JSON.parse(task.dependencies);
+                } catch (e) {
+                    console.error(`Error parsing dependencies for task ${task.tid}:`, e);
+                    parsedDependencies = [];
+                }
+            } else if (Array.isArray(task.dependencies)) {
+                parsedDependencies = task.dependencies;
+            } else {
+                console.warn(`Unexpected type for dependencies in task ${task.tid}:`, typeof task.dependencies);
+                parsedDependencies = [];
+            }
+
+            return {
+                id: task.tid,
+                project: {
+                    id: task.pid,
+                    name: task.project_title,
+                },
+                start: task.start_date,
+                end: task.deadline,
+                nameAndTitle: task.task_title,
+                type: 'task',
+                dependencies: parsedDependencies,
+                progress: task.progress
+            };
+        });
 
         console.log(JSON.stringify(tasks));
         res.status(200).json(tasks);
@@ -61,7 +103,7 @@ app.post('/api/tasks', (req, res) => {
     // Convert dependencies array to JSON string
     const dependenciesJson = JSON.stringify(dependencies || []);
 
-    // SQL query to insert the new task
+    // SQL query to insert the new task, including progress
     const insertTaskSql = `
         INSERT INTO task (tid, title, startdate, deadline, pid, descriptionText, dependencies)
         VALUES (?, ?, DATE(?), DATE(?), ?, ?, ?);
@@ -99,7 +141,7 @@ app.put('/api/tasks/:id', (req, res) => {
             startdate = DATE(?),
             deadline = DATE(?),
             dependencies = ?,
-            progress= ?
+            progress = ?
         WHERE tid = ?;
     `;
 
@@ -139,10 +181,18 @@ app.delete('/api/tasks/:id', (req, res) => {
     });
 });
 
+// Handle undefined routes
+app.use((req, res) => {
+    res.status(404).send({ message: 'Route not found' });
+});
+
+// Error-handling middleware
+app.use((err, req, res, next) => {
+    console.error(err.stack);
+    res.status(500).send('Something went wrong!');
+});
+
 // Start the server and listen on the specified port
 app.listen(port, () => {
     console.log(`Server running on port ${port}`);
 });
-
-
-

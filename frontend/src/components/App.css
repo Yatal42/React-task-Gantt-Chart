@@ -1,6 +1,7 @@
 body {
   font-family: "Gill Sans";
   background-color: #fff;
+  font-size: 12px;
 }
 
 #title {
@@ -36,13 +37,14 @@ body {
 .tool-bar {
   font-family: Montserrat, sans-serif;
   display:flex;
-  justify-content:space-around;
+  justify-content:space-between;
   align-items: center;
   margin-bottom: 20px;
   margin-top: 20px;
-  width: 45%;
+  width: 40%;
   height:65px;
   padding-left: 15px;
+  padding-right:15px;
   border-radius: 5px;
   border: 1px solid #3e2d47;
   box-shadow: 0 15px 35px 0 #a99d9f;
@@ -82,7 +84,7 @@ body {
 .gantt-container {
   display:flex;
   justify-content:left;
-  width: 95%;
+  width: 55%;
   border-radius: 5px;
   border: 1px solid #3e2d47;
   box-shadow: 0 15px 35px 0 #a99d9f;

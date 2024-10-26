@@ -1,19 +1,19 @@
-import { useState, useCallback, useEffect, useRef } from "react";
+import React, { useState, useCallback, useEffect, useRef } from "react";
 import { ViewMode, Task } from "gantt-task-react";
 import "gantt-task-react/dist/index.css";
 import "./App.css";
 import GanttChart from "./GanttChart";
 import Heading from "./Heading";
 
-function App() {
+const App: React.FC = () => {
     const [selectedTask, setSelectedTask] = useState<Task | null>(null);
     const [tasks, setTasks] = useState<Task[]>([]);
-    const [isChecked, setIsChecked] = useState(() => {
+    const [isChecked, setIsChecked] = useState<boolean>(() => {
         const savedState = localStorage.getItem('toggleState');
         return savedState ? JSON.parse(savedState) : window.innerWidth > 1150;
     });
     const [view, setView] = useState<ViewMode>(ViewMode.Month);
-    const prevWidthRef = useRef(window.innerWidth);
+    const prevWidthRef = useRef<number>(window.innerWidth);
     
     useEffect(() => {
         const handleResize = () => {
@@ -32,7 +32,7 @@ function App() {
             window.removeEventListener('resize', handleResize);
         };
     }, []);
-
+    
     const handleSelect = useCallback(
         (task: Task, isSelected: boolean) => {
             setSelectedTask(isSelected ? task : null);
