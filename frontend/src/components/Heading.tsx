@@ -19,6 +19,7 @@ const Heading: React.FC<HeadingProps>=({setIsChecked, setView, isChecked, view, 
             <h1 id="title">Task Gantt-Chart</h1>
             <div id="line"></div>
         </div>
+        <div className="heading-tool-bars">
         <ToolBar 
             setIsChecked={setIsChecked}
             setView={setView}
@@ -27,6 +28,7 @@ const Heading: React.FC<HeadingProps>=({setIsChecked, setView, isChecked, view, 
             tasks={tasks}
             setTasks={setTasks}
         />
+        </div>
     </div>
   );
 }

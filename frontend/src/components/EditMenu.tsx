@@ -96,7 +96,7 @@ const handleSave = () => {
           start: taskStart, 
           end: taskEnd,
           dependencies: selectedDependencies,
-          progress: selectedTask.progress // Ensure progress is included
+          progress: selectedTask.progress 
       };
 
       // Format dates to 'YYYY-MM-DD'
@@ -104,17 +104,19 @@ const handleSave = () => {
       const formattedEnd = taskEnd.toISOString().split('T')[0];
 
       fetch(`http://localhost:8080/api/tasks/${selectedTask.id}`, {
-          method: 'PUT',
-          headers: {
-              'Content-Type': 'application/json',
-          },
-          body: JSON.stringify({
-              nameAndTitle: taskName,
-              start: formattedStart,
-              end: formattedEnd,
-              dependencies: selectedDependencies,
-              progress: selectedTask.progress // Include progress
-          }),
+        method: 'PUT',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          title: taskName,
+          startdate: formattedStart,
+          deadline: formattedEnd,
+          pid: selectedTask.project, // ודא ש-pid נשלח
+          // descriptionText: selectedTask.description || '', // אם יש תיאור
+          dependencies: selectedDependencies,
+          progress: selectedTask.progress,
+        }),
       })
       .then(response => {
           if (!response.ok) {

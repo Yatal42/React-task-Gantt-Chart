@@ -1,4 +1,4 @@
-import React, { useState, useCallback, useEffect, useRef } from "react";
+import React, { useState, useCallback, useEffect, useRef, useContext } from "react";
 import { ViewMode, Task } from "gantt-task-react";
 import "gantt-task-react/dist/index.css";
 import "./App.css";
@@ -14,7 +14,7 @@ const App: React.FC = () => {
     });
     const [view, setView] = useState<ViewMode>(ViewMode.Month);
     const prevWidthRef = useRef<number>(window.innerWidth);
-    
+
     useEffect(() => {
         const handleResize = () => {
             const currentWidth = window.innerWidth;

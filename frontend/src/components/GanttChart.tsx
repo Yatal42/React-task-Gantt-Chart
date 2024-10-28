@@ -1,10 +1,10 @@
-import React, { useState, useEffect, useRef, useCallback } from "react";
+import React, { useState, useEffect, useRef, useCallback, useContext } from "react";
 import { Gantt, Task, ViewMode } from "gantt-task-react";
 import "gantt-task-react/dist/index.css";
-import { initTasks} from "../Tasks";
 import IconButton from "@mui/material/IconButton";
 import DriveFileRenameOutlineOutlinedIcon from '@mui/icons-material/DriveFileRenameOutlineOutlined';
 import EditMenu from './EditMenu';
+import { ProjectContext } from '../context/ProjectContext';
 
 interface GanttChartProps {
   view: ViewMode;
@@ -26,17 +26,70 @@ const GanttChart: React.FC<GanttChartProps> = ({
   setSelectedTask,
 }) => {
   const ganttRef = useRef<HTMLDivElement>(null);
+  const { selectedProject } = useContext(ProjectContext);
   const [listCellWidth, setListCellWidth] = useState<string>("");
   const [colswidth, setColsWidth] = useState(() => window.innerWidth <= 1150 ? 80 : 100);
   const [editMenuOpen, setEditMenuOpen] = useState<boolean>(false);
 
   useEffect(() => {
     const fetchTasks = async () => {
-      const initTasksGantt = await initTasks();
-      setTasks(initTasksGantt);
+      try {
+        let response;
+        if (selectedProject?.pid === 0) {
+          // Fetch all tasks
+          response = await fetch(`http://localhost:8080/api/tasks/`);
+        } else if (selectedProject) {
+          // Fetch tasks for selected project
+          response = await fetch(`http://localhost:8080/api/projects/${selectedProject.pid}/tasks`);
+        } else {
+          // No project selected
+          setTasks([]);
+          return;
+        }
+  
+        if (!response.ok) {
+          const errorText = await response.text(); 
+          console.error('Server error response:', errorText);
+          throw new Error(`Server responded with status: ${response.status}`);
+        }
+  
+        const data = await response.json();
+        console.log('Fetched tasks:', data);
+        
+        const ganttTasks = data.map((task: any) => ({
+          id: task.tid.toString(),
+          name: task.title,
+          start: new Date(task.startdate),
+          end: new Date(task.deadline),
+          type: 'task',
+          progress: task.progress,
+          dependencies: Array.isArray(task.dependencies)
+            ? task.dependencies.map((dep: any) => dep.toString())
+            : [],
+          project: task.pid.toString(),
+          description: task.descriptionText || '',
+          styles: {
+            progressColor: "#3e2d47",
+            progressSelectedColor: "#3e2d47",
+          },
+        }));
+  
+        setTasks(ganttTasks);
+      } catch (error) {
+        console.error('Error fetching tasks:', error);
+      }
     };
+  
     fetchTasks();
-  }, [setTasks]);
+  }, [selectedProject, setTasks]);
+  
+  // useEffect(() => {
+  //   const fetchTasks = async () => {
+  //     const initTasksGantt = await initTasks();
+  //     setTasks(initTasksGantt);
+  //   };
+  //   fetchTasks();
+  // }, [setTasks]);
 
   const progressChangeHandler = useCallback(
     (task: Task) => {
@@ -56,14 +109,16 @@ const GanttChart: React.FC<GanttChartProps> = ({
         method: 'PUT',
         headers: {'Content-Type': 'application/json',},
         body: JSON.stringify({
-          nameAndTitle: task.name, 
-          start: formattedStart,
-          end: formattedEnd,
+          title: task.name, 
+          startdate: formattedStart,
+          deadline: formattedEnd,
+          pid: selectedProject?.pid,
+          // descriptionText: task.description || '',
           dependencies: task.dependencies || [], 
           progress: task.progress
         }),
       });
-
+    
       if (!response.ok) {
         const errorText = await response.text(); 
         console.error('Server error response:', errorText);
@@ -106,12 +161,16 @@ const GanttChart: React.FC<GanttChartProps> = ({
 
   const validTasks = tasks.map(task => ({
     ...task,
-    start: task.start || new Date(), 
-    end: task.end || new Date(),     
+    start: new Date(task.start),
+    end: new Date(task.end),     
   }));
 
+  if (!selectedProject) {
+    return <div>Please select project</div>;
+  }
+
   if (validTasks.length === 0) {
-    return <div>Loading...</div>;
+    return <div>There are no tasks to display.</div>;
   }
 
   return (
@@ -159,5 +218,6 @@ const GanttChart: React.FC<GanttChartProps> = ({
     </div>
   );
 };
+
 
 export default GanttChart;

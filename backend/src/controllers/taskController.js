@@ -1,43 +1,35 @@
 // src/controllers/taskController.js
 
 const db = require('../db');
+// src/controllers/taskController.js
 
 // GET all tasks
 exports.getAllTasks = async (req, res) => {
     try {
         const [rows] = await db.query(`
-            SELECT task.tid, project.pid, project.title AS project_title, project.start AS start_date, 
-                   task.deadline, task.title AS task_title, task.dependencies, task.progress
-            FROM task
-            LEFT JOIN project ON task.pid = project.pid;
+            SELECT tid, title, startdate, deadline, pid, descriptionText, dependencies, progress
+            FROM task;
         `);
-        
+
         const tasks = rows.map(task => {
-            let parsedDependencies = [];
-            if (task.dependencies && typeof task.dependencies === 'string') {
+            let dependencies = [];
+            if (task.dependencies) {
                 try {
-                    parsedDependencies = JSON.parse(task.dependencies);
+                    dependencies = JSON.parse(task.dependencies);
                 } catch (e) {
                     console.error(`Error parsing dependencies for task ${task.tid}:`, e);
-                    parsedDependencies = [];
+                    dependencies = [];
                 }
-            } else if (Array.isArray(task.dependencies)) {
-                parsedDependencies = task.dependencies;
-            } else {
-                parsedDependencies = [];
             }
 
             return {
-                id: task.tid,
-                project: {
-                    id: task.pid,
-                    name: task.project_title,
-                },
-                start: task.start_date,
-                end: task.deadline,
-                nameAndTitle: task.task_title,
-                type: 'task',
-                dependencies: parsedDependencies,
+                tid: task.tid,
+                title: task.title,
+                startdate: task.startdate,
+                deadline: task.deadline,
+                pid: task.pid,
+                descriptionText: task.descriptionText,
+                dependencies: dependencies,
                 progress: task.progress
             };
         });
@@ -50,7 +42,6 @@ exports.getAllTasks = async (req, res) => {
 };
 
 // GET tasks for a specific project
-// src/controllers/taskController.js
 exports.getTasksByProject = async (req, res) => {
     const projectId = req.params.pid;
     console.log(`Fetching tasks for project ID: ${projectId}`);
@@ -94,24 +85,24 @@ exports.getTasksByProject = async (req, res) => {
 
 // POST add a new task
 exports.createTask = async (req, res) => {
-    const { title, startdate, deadline, pid, descriptionText, dependencies} = req.body;
-
+    const { title, startdate, deadline, pid, descriptionText, dependencies } = req.body;
+  
     try {
-        const formattedStart = new Date(startdate).toISOString().split('T')[0];
-        const formattedEnd = new Date(deadline).toISOString().split('T')[0];
-        const dependenciesJson = JSON.stringify(dependencies || []);
-
-        const [result] = await db.query(`
-            INSERT INTO task (title, startdate, deadline, pid, descriptionText, dependencies)
-            VALUES (?, DATE(?), DATE(?), ?, ?, ?);
-        `, [title, formattedStart, formattedEnd, pid, descriptionText, dependenciesJson]);
-
-        res.status(201).json({ message: 'Task added successfully', taskId: result.insertId });
+      const formattedStart = new Date(startdate).toISOString().split('T')[0];
+      const formattedEnd = new Date(deadline).toISOString().split('T')[0];
+      const dependenciesJson = JSON.stringify(dependencies || []);
+  
+      const [result] = await db.query(`
+        INSERT INTO task (title, startdate, deadline, pid, descriptionText, dependencies)
+        VALUES (?, DATE(?), DATE(?), ?, ?, ?);
+      `, [title, formattedStart, formattedEnd, pid, descriptionText, dependenciesJson]);
+  
+      res.status(201).json({ message: 'Task added successfully', taskId: result.insertId });
     } catch (error) {
-        console.error('Error adding task:', error);
-        res.status(500).json({ message: 'Error adding task', error });
+      console.error('Error adding task:', error);
+      res.status(500).json({ message: 'Error adding task', error });
     }
-};
+  };
 
 // PUT update an existing task
 exports.updateTask = async (req, res) => {
