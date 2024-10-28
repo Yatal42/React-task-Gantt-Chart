@@ -1,9 +1,13 @@
-import React, { useState, useEffect, useRef } from "react";
+import React, { useState, useEffect, useRef, useContext } from "react";
+import { ProjectContext } from '../context/ProjectContext';
 import "gantt-task-react/dist/index.css";
 import { ViewMode, Task } from "gantt-task-react";
 import TextField from "@mui/material/TextField";
 import MenuItem from "@mui/material/MenuItem";
 import AddTask from "./AddTask";
+import ProjectSelector from "./ProjectSelector"
+import AddProject from "./AddProject"
+import Button from "./Button"
 
 interface ToolBarProps {
     setIsChecked: (checked: boolean) => void; 
@@ -16,6 +20,7 @@ interface ToolBarProps {
 
 const ToolBar: React.FC<ToolBarProps>=({setIsChecked, setView, isChecked, view, tasks, setTasks}) =>{
     const prevWidthRef = useRef(window.innerWidth);
+    const { selectedProject, deleteProject } = useContext(ProjectContext);
 
     useEffect(() => {
       const handleResize = () => {
@@ -53,6 +58,17 @@ const ToolBar: React.FC<ToolBarProps>=({setIsChecked, setView, isChecked, view, 
     {
         setView(selectedOption.onChange); 
     }};
+
+    const handleDeleteProject = async () => {
+        if (!selectedProject) {
+          alert('No project selected');
+          return;
+        }
+        const confirmed = window.confirm(`Are you sure you want to delete project "${selectedProject.title}"?`);
+        if (confirmed) {
+          await deleteProject(selectedProject.pid);
+        }
+      };
 
     const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     setIsChecked(event.target.checked);
@@ -103,6 +119,12 @@ const ToolBar: React.FC<ToolBarProps>=({setIsChecked, setView, isChecked, view, 
             ))}
             </TextField>
         </div>
+        <div>
+            <ProjectSelector />
+        </div>
+        <div>
+            <Button text="Delete Project" onClick={handleDeleteProject} />
+        </div>
         <div
             className="add-task-container frame-size"
             style={{
@@ -114,6 +136,9 @@ const ToolBar: React.FC<ToolBarProps>=({setIsChecked, setView, isChecked, view, 
                 tasks={tasks}
                 setTasks={setTasks}
             />
+        </div>
+        <div>
+            <AddProject />
         </div>
     </div>    
     );
