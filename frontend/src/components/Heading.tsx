@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useRef } from "react";
+import React from "react";
 import "gantt-task-react/dist/index.css";
 import { ViewMode, Task } from "gantt-task-react";
 import ToolBar from "./ToolBar";
@@ -14,12 +14,11 @@ interface HeadingProps {
 
 const Heading: React.FC<HeadingProps>=({setIsChecked, setView, isChecked, view, tasks, setTasks}) =>{
   return (
-    <div className="center-heading-container">
+    <div className="heading">
         <div className="heading-title">
             <h1 id="title">Task Gantt-Chart</h1>
             <div id="line"></div>
         </div>
-        <div className="heading-tool-bars">
         <ToolBar 
             setIsChecked={setIsChecked}
             setView={setView}
@@ -28,7 +27,6 @@ const Heading: React.FC<HeadingProps>=({setIsChecked, setView, isChecked, view, 
             tasks={tasks}
             setTasks={setTasks}
         />
-        </div>
     </div>
   );
 }
