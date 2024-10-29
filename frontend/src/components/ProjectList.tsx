@@ -1,5 +1,3 @@
-// src/components/ProjectList.tsx
-
 import React, { useContext } from 'react';
 import { ProjectContext } from '../context/ProjectContext';
 import { List, ListItem, ListItemText, IconButton } from '@mui/material';

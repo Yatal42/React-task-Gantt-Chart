@@ -1,5 +1,3 @@
-// src/components/AddProject.tsx
-
 import React, { useState, useContext } from 'react';
 import { ProjectContext } from '../context/ProjectContext';
 import { Dialog, DialogTitle, DialogContent, DialogActions, TextField } from '@mui/material';

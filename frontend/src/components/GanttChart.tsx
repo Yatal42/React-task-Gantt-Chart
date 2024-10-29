@@ -27,9 +27,8 @@ const GanttChart: React.FC<GanttChartProps> = ({
 }) => {
   const ganttRef = useRef<HTMLDivElement>(null);
   const { selectedProject } = useContext(ProjectContext);
-  const [listCellWidth, setListCellWidth] = useState<string>("");
+  const [editMenuOpen, setEditMenuOpen] = useState<boolean>(false);  
   const [colswidth, setColsWidth] = useState(() => window.innerWidth <= 1150 ? 80 : 100);
-  const [editMenuOpen, setEditMenuOpen] = useState<boolean>(false);
 
   useEffect(() => {
     const fetchTasks = async () => {
@@ -83,13 +82,17 @@ const GanttChart: React.FC<GanttChartProps> = ({
     fetchTasks();
   }, [selectedProject, setTasks]);
   
-  // useEffect(() => {
-  //   const fetchTasks = async () => {
-  //     const initTasksGantt = await initTasks();
-  //     setTasks(initTasksGantt);
-  //   };
-  //   fetchTasks();
-  // }, [setTasks]);
+  useEffect(() => {
+    const handleResize = () => {
+      if (isChecked) {
+        setColsWidth(window.innerWidth <= 1150 ? 100 : 160);
+      }
+    };
+    window.addEventListener("resize", handleResize);
+    return () => {
+      window.removeEventListener("resize", handleResize);
+    };
+  }, [isChecked]);
 
   const progressChangeHandler = useCallback(
     (task: Task) => {
@@ -113,7 +116,6 @@ const GanttChart: React.FC<GanttChartProps> = ({
           startdate: formattedStart,
           deadline: formattedEnd,
           pid: selectedProject?.pid,
-          // descriptionText: task.description || '',
           dependencies: task.dependencies || [], 
           progress: task.progress
         }),
@@ -137,19 +139,6 @@ const GanttChart: React.FC<GanttChartProps> = ({
     }
   };
 
-  useEffect(() => {
-    const handleResize = () => {
-      if (isChecked) {
-        setColsWidth(window.innerWidth <= 1150 ? 80 : 120);
-        setListCellWidth(window.innerWidth <= 1150 ? "100px" : "125px");
-      }
-    };
-    window.addEventListener("resize", handleResize);
-    return () => {
-      window.removeEventListener("resize", handleResize);
-    };
-  }, [isChecked]);
-
   const openEditMenu = (task: Task) => {
     setSelectedTask(task);
     setEditMenuOpen(true);
@@ -166,15 +155,15 @@ const GanttChart: React.FC<GanttChartProps> = ({
   }));
 
   if (!selectedProject) {
-    return <div>Please select project</div>;
+    return <div>There are no tasks to display. Please select project</div>
   }
 
   if (validTasks.length === 0) {
-    return <div>There are no tasks to display.</div>;
+    return <div>There are no tasks to display in this project.</div>;
   }
 
   return (
-    <div className="gantt-container" ref={ganttRef}>
+    <div className="gantt-chart" ref={ganttRef}>
       <div className="icon-container">
         {validTasks.map((task) => (
           <IconButton
@@ -202,8 +191,8 @@ const GanttChart: React.FC<GanttChartProps> = ({
           arrowColor="#a99d9f"
           barFill={55}
           fontFamily="Gill Sans"
-          listCellWidth={isChecked ? (window.innerWidth <= 1150 ? "85px" : "100px") : ""}
-          fontSize={isChecked ? (window.innerWidth <= 1150 ? "0.6rem" : "0.7rem") : "0.7rem"}
+          fontSize={"0.8rem"}
+          listCellWidth={isChecked ? "155px" : ""}
           columnWidth={colswidth}
           rowHeight={40}
         />

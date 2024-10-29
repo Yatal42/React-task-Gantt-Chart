@@ -1,16 +1,14 @@
-// src/types.ts
-
 export interface Project {
     pid: number;
     title: string;
-    start: string; // פורמט 'YYYY-MM-DD'
+    start: string; 
 }
 
 export interface Task {
     tid: number;
     title: string;
-    startdate: string; // פורמט 'YYYY-MM-DD'
-    deadline: string; // פורמט 'YYYY-MM-DD'
+    startdate: string; 
+    deadline: string; 
     pid: number;
     descriptionText: string;
     dependencies: string[];
