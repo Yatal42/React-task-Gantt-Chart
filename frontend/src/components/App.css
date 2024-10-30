@@ -2,7 +2,7 @@
   --primary-color: #83217d;
   --secondary-color: #c1bcc8;
   --font-family: "Gill Sans", sans-serif;
-  --font-size: 16px;
+  --font-size: 20px;
 }
 
 body {
@@ -11,6 +11,10 @@ body {
   background-color: #fff;
   margin: 0;
   padding: 0;
+}
+
+.text{
+  margin-bottom: 20px;
 }
 
 .header-container {
