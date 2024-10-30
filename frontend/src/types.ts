@@ -2,6 +2,7 @@ export interface Project {
     pid: number;
     title: string;
     start: string; 
+    
 }
 
 export interface Task {
@@ -13,4 +14,5 @@ export interface Task {
     descriptionText: string;
     dependencies: string[];
     progress: number;
+    // project: string;
 }

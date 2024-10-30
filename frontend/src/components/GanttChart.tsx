@@ -152,11 +152,11 @@ const GanttChart: React.FC<GanttChartProps> = ({
   }));
 
   if (!selectedProject) {
-    return <div>There are no tasks to display. Please select project</div>
+    return <div className="text">There are no tasks to display. Please select project</div>
   }
 
   if (validTasks.length === 0) {
-    return <div>There are no tasks to display in this project.</div>;
+    return <div className="text">There are no tasks to display in this project.</div>;
   }
 
   return (
@@ -192,6 +192,7 @@ const GanttChart: React.FC<GanttChartProps> = ({
             width: '40px',
             borderRadius: '10px',
             color: "#83217d",
+
           }}
           onClick={() => openEditMenu(task)}>
           <DriveFileRenameOutlineOutlinedIcon />
