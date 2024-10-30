@@ -161,24 +161,6 @@ const GanttChart: React.FC<GanttChartProps> = ({
 
   return (
     <div className="gantt-chart" ref={ganttRef}>
-      <div className="icon-container">
-        {validTasks.map((task) => (
-          <IconButton
-            key={task.id}
-            sx={{
-              display: 'inline',
-              zIndex: 100,
-              height: '40px',
-              width: '40px',
-              marginBottom: '0px',
-              borderRadius: '5px',
-              color: "#83217d"
-            }}
-            onClick={() => openEditMenu(task)}>
-            <DriveFileRenameOutlineOutlinedIcon />
-          </IconButton>
-        ))}
-      </div>
       <div className="gantt">
         <Gantt
           tasks={validTasks}
@@ -186,22 +168,37 @@ const GanttChart: React.FC<GanttChartProps> = ({
           onProgressChange={progressChangeHandler}
           onSelect={handleSelect}
           arrowColor="#83217d"
-          barFill={55}
+          barFill={50}
           fontFamily="Gill Sans"
           fontSize={"0.8rem"}
           listCellWidth={isChecked ? "155px" : ""}
           columnWidth={colswidth}
-          rowHeight={40}
-        />
+          rowHeight={40}/>
       </div>
+      <div className="icon-container">
       <EditMenu
         open={editMenuOpen}
         onClose={closeEditMenu}
         selectedTask={selectedTask}
         tasks={validTasks}
-        setTasks={setTasks}
-      />
+        setTasks={setTasks}/>
+      {validTasks.map((task) => (
+        <IconButton
+          key={task.id}
+          sx={{
+            display: 'inline',
+            // zIndex: 100,
+            height: '40px',
+            width: '40px',
+            borderRadius: '10px',
+            color: "#83217d",
+          }}
+          onClick={() => openEditMenu(task)}>
+          <DriveFileRenameOutlineOutlinedIcon />
+        </IconButton>
+      ))}
     </div>
+  </div>
   );
 };
 

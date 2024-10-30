@@ -2,6 +2,8 @@ import React, { useState, useContext } from 'react';
 import { ProjectContext } from '../context/ProjectContext';
 import { Dialog, DialogTitle, DialogContent, DialogActions, TextField } from '@mui/material';
 import Button from "./Button";
+import IconButton from '@mui/material/IconButton';
+import CloseIcon from '@mui/icons-material/Close';
 
 const AddProject: React.FC = () => {
     const { addProject } = useContext(ProjectContext);
@@ -45,32 +47,43 @@ const AddProject: React.FC = () => {
     return (
         <>
             <Button text="Add project " onClick={handleOpen} />
-            <Dialog open={open} onClose={handleClose}>
+            <Dialog open={open} onClose={handleClose} >
                 <DialogTitle>Add new project</DialogTitle>
-                <DialogContent>
+                <IconButton
+                    aria-label="close"
+                    onClick={handleClose}
+                    sx={{
+                    position: 'absolute',
+                    right: 8,
+                    top: 8,
+                    color: (theme) => theme.palette.grey[500],
+                    }}>
+                <CloseIcon />
+                </IconButton>
+                <DialogContent dividers sx={{display:'flex', flexDirection:'column'}}>
                     <TextField
-                        autoFocus
-                        margin="dense"
+                        margin="normal"
                         label="Project name"
                         type="text"
-                        fullWidth
+                        color="secondary"
+                        sx={{ minWidth: 300}}
                         required
                         value={title}
                         onChange={e => setTitle(e.target.value)}
                     />
                     <TextField
-                        margin="dense"
+                        margin="normal"
                         label="start date"
                         type="date"
-                        fullWidth
+                        color="secondary"
+                        sx={{ minWidth: 300}}
                         required
                         InputLabelProps={{ shrink: true }}
                         value={start}
                         onChange={e => setStart(e.target.value)}
                     />
                 </DialogContent>
-                <DialogActions>
-                    <Button text="Cancel" onClick={handleClose} />
+                <DialogActions sx={{display:'flex', justifyContent:'center'}}>
                     <Button text="Add" onClick={handleSubmit} />
                 </DialogActions>
             </Dialog>

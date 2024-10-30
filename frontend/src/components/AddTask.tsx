@@ -7,6 +7,9 @@ import DialogTitle from "@mui/material/DialogTitle";
 import TextField from "@mui/material/TextField";
 import { Task } from "gantt-task-react";
 import { ProjectContext } from '../context/ProjectContext';
+import Box from '@mui/material/Box';
+import IconButton from '@mui/material/IconButton';
+import CloseIcon from '@mui/icons-material/Close';
 
 interface AddTaskProps {
   onTaskAdded: (task: Task) => void;
@@ -20,7 +23,6 @@ const AddTask: React.FC<AddTaskProps> = ({ onTaskAdded, tasks, setTasks }) => {
   const [description, setDescription] = useState<string>("");
   const [taskStart, setTaskStart] = useState<string>("");
   const [taskEnd, setTaskEnd] = useState<string>("");
-
   const { selectedProject } = useContext(ProjectContext);
 
   const handleClickOpen = () => {
@@ -106,29 +108,44 @@ const AddTask: React.FC<AddTaskProps> = ({ onTaskAdded, tasks, setTasks }) => {
   return (
     <>
       <Button text="Add Task" onClick={handleClickOpen} />
-      <Dialog open={open} onClose={handleClose}>
+      <Dialog open={open} onClose={handleClose} >
         <DialogTitle>Add New Task</DialogTitle>
-        <DialogContent>
+        <IconButton
+            aria-label="close"
+            onClick={handleClose}
+            sx={{
+              position: 'absolute',
+              right: 8,
+              top: 8,
+              color: (theme) => theme.palette.grey[500],
+            }}>
+          <CloseIcon />
+        </IconButton>
+        <DialogContent dividers sx={{display:'flex', flexDirection:'column'}}>
           <TextField
             label="Task Name"
             value={taskName}
             onChange={(e) => setTaskName(e.target.value)}
-            fullWidth
+            sx={{ minWidth: 300}}
+            required
+            color="secondary"
             margin="normal"/>
           <TextField
             label="Description"
             value={description}
             onChange={(e) => setDescription(e.target.value)}
-            fullWidth
+            sx={{ minWidth: 300}}
             margin="normal"
+            required
+            color="secondary"
             multiline/>
           <TextField
             label="Start Date"
             type="date"
             value={taskStart}
             onChange={(e) => setTaskStart(e.target.value)}
-            fullWidth
             margin="normal"
+            color="secondary"
             InputLabelProps={{
               shrink: true,
             }}/>
@@ -137,14 +154,14 @@ const AddTask: React.FC<AddTaskProps> = ({ onTaskAdded, tasks, setTasks }) => {
             type="date"
             value={taskEnd}
             onChange={(e) => setTaskEnd(e.target.value)}
-            fullWidth
             margin="normal"
+            color="secondary"
+            required
             InputLabelProps={{
               shrink: true,
             }}/>
-        </DialogContent>
-        <DialogActions>
-          <Button onClick={handleClose} text="Cancel" />
+        </DialogContent >
+        <DialogActions sx={{display:'flex', justifyContent:'center'}}>
           <Button onClick={handleAddTask} text="Add Task" />
         </DialogActions>
       </Dialog>

@@ -33,7 +33,7 @@ const ToolBar: React.FC<ToolBarProps>=({setIsChecked, setView, isChecked, view, 
     }};
 
     const handleDeleteProject = async () => {
-        if (!selectedProject) {
+        if (!selectedProject|| selectedProject.pid === 0) {
           alert('No project selected');
           return;
         }
