@@ -4,12 +4,12 @@ import { ViewMode, Task } from "gantt-task-react";
 import ToolBar from "./ToolBar";
 
 interface HeadingProps {
-    setIsChecked: (checked: boolean) => void; // Function to set the checked state of the task list toggle
-    setView: (viewMode: ViewMode) => void; // Function to set the current view mode (Day, Week, Month)
-    view: ViewMode; // Current view mode of the Gantt chart
-    isChecked: boolean; // State to indicate if the task list is visible
-    tasks: Task[]; // Array of tasks in the Gantt chart
-    setTasks: (tasks: Task[]) => void; // Function to update the tasks array
+    setIsChecked: (checked: boolean) => void; 
+    setView: (viewMode: ViewMode) => void; 
+    view: ViewMode; 
+    isChecked: boolean; 
+    tasks: Task[]; 
+    setTasks: (tasks: Task[]) => void; 
   }
 
 const Heading: React.FC<HeadingProps>=({setIsChecked, setView, isChecked, view, tasks, setTasks}) =>{

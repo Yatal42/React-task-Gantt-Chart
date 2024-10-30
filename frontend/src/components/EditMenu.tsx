@@ -16,7 +16,6 @@ import { Task } from "gantt-task-react";
 import Box from '@mui/material/Box';
 
 
-// Custom styled Dialog component
 const BootstrapDialog = styled(Dialog)(({ theme }) => ({
   '& .MuiDialogContent-root': {
     padding: theme.spacing(1),
@@ -26,14 +25,12 @@ const BootstrapDialog = styled(Dialog)(({ theme }) => ({
   },
 }));
 
-// Custom styled Button component with dynamic font size and width based on screen size
 const StyledButton = styled(Button)<{ fontSize: string, buttonWidth: string }>(({ fontSize, buttonWidth }) => ({
   fontSize: fontSize,
   padding: '5px',
   width: buttonWidth,
 }));
 
-// Define the props interface for the EditMenu component
 interface EditMenuProps {
   open: boolean;
   onClose: () => void;
@@ -42,16 +39,13 @@ interface EditMenuProps {
   setTasks: (tasks: Task[]) => void;
 }
 
-// The EditMenu component allows users to edit a selected task's details ,delete the task and manage dependencies.
 const EditMenu: React.FC<EditMenuProps> = ({ open, onClose, selectedTask, tasks, setTasks }) => {
-  // State to manage task details
   const [taskName, setTaskName] = useState('');
   const [taskStart, setTaskStart] = useState(new Date());
   const [taskEnd, setTaskEnd] = useState(new Date());
   const [dependencyDialogOpen, setDependencyDialogOpen] = useState(false);
   const [selectedDependencies, setSelectedDependencies] = useState<string[]>([]);
 
-  // Detect if the screen is small to adjust styles dynamically
   const isSmallScreen = useMediaQuery('(max-width:1150px)');
   const titleFontSize = isSmallScreen ? '14px' : '24px';
   const contentFontSize = isSmallScreen ? '11px' : '16px';
@@ -59,7 +53,6 @@ const EditMenu: React.FC<EditMenuProps> = ({ open, onClose, selectedTask, tasks,
   const buttonFontSize = isSmallScreen ? '10px' : '14px';
   const buttonWidth = isSmallScreen ? '30%' : '33.33%';
 
-  // Update state when a task is selected
   useEffect(() => {
     if (selectedTask) {
       setTaskName(selectedTask.name);
@@ -70,12 +63,10 @@ const EditMenu: React.FC<EditMenuProps> = ({ open, onClose, selectedTask, tasks,
     }
   }, [selectedTask]);
 
-  // Open the dependency selection dialog
   const handleEditDependencies = () => {
     setDependencyDialogOpen(true);
   };
 
-  // Handle selection and deselection of dependencies
   const handleDependencySelection = (event: React.ChangeEvent<HTMLInputElement>) => {
     const selectedTaskId = event.target.value;
     setSelectedDependencies((prev) => {
@@ -87,7 +78,6 @@ const EditMenu: React.FC<EditMenuProps> = ({ open, onClose, selectedTask, tasks,
     });
   };
 
-// Save the updated task details
 const handleSave = () => {
   if (selectedTask) {
       const updatedTask = { 
@@ -99,7 +89,6 @@ const handleSave = () => {
           progress: selectedTask.progress 
       };
 
-      // Format dates to 'YYYY-MM-DD'
       const formattedStart = taskStart.toISOString().split('T')[0];
       const formattedEnd = taskEnd.toISOString().split('T')[0];
 
@@ -112,8 +101,7 @@ const handleSave = () => {
           title: taskName,
           startdate: formattedStart,
           deadline: formattedEnd,
-          pid: selectedTask.project, // ודא ש-pid נשלח
-          // descriptionText: selectedTask.description || '', // אם יש תיאור
+          pid: selectedTask.project, 
           dependencies: selectedDependencies,
           progress: selectedTask.progress,
         }),
@@ -134,7 +122,6 @@ const handleSave = () => {
   }
 };
 
-  // Delete the selected task
   const handleDelete = () => {
     if (selectedTask) {
       fetch(`http://localhost:8080/api/tasks/${selectedTask.id}`, {
@@ -180,7 +167,6 @@ const handleSave = () => {
           <Typography gutterBottom sx={{ fontSize: contentFontSize }}>
             Edit task details below.
           </Typography>
-          {/* Text field for task name can be edited if needed */}
           <TextField
               label="Task Name"
               value={taskName}
@@ -199,7 +185,6 @@ const handleSave = () => {
                   mb: isSmallScreen ? 0.5 : 2
               }}
           />
-          {/* Date picker for end date can be re-enabled if needed */}
           <TextField
               label="End Date"
               type="date"
@@ -248,7 +233,6 @@ const handleSave = () => {
                     />
                 </Box>
             </DialogActions>
-        {/* Dependency Dialog */}
         <Dialog open={dependencyDialogOpen} onClose={() => setDependencyDialogOpen(false)}>
           <DialogTitle>Select Dependencies</DialogTitle>
           <IconButton

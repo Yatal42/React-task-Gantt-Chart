@@ -1,9 +1,5 @@
-// src/controllers/taskController.js
-
 const db = require('../db');
-// src/controllers/taskController.js
 
-// GET all tasks
 exports.getAllTasks = async (req, res) => {
     try {
         const [rows] = await db.query(`
@@ -16,6 +12,9 @@ exports.getAllTasks = async (req, res) => {
             if (task.dependencies) {
                 try {
                     dependencies = JSON.parse(task.dependencies);
+                    if (!Array.isArray(dependencies)) {
+                        dependencies = [dependencies];
+                    }
                 } catch (e) {
                     console.error(`Error parsing dependencies for task ${task.tid}:`, e);
                     dependencies = [];
@@ -41,7 +40,6 @@ exports.getAllTasks = async (req, res) => {
     }
 };
 
-// GET tasks for a specific project
 exports.getTasksByProject = async (req, res) => {
     const projectId = req.params.pid;
     console.log(`Fetching tasks for project ID: ${projectId}`);
@@ -58,6 +56,9 @@ exports.getTasksByProject = async (req, res) => {
             if (task.dependencies) {
                 try {
                     dependencies = JSON.parse(task.dependencies);
+                    if (!Array.isArray(dependencies)) {
+                        dependencies = [dependencies];
+                    }
                 } catch (e) {
                     console.error(`Error parsing dependencies for task ${task.tid}:`, e);
                     dependencies = [];
@@ -83,7 +84,6 @@ exports.getTasksByProject = async (req, res) => {
     }
 };
 
-// POST add a new task
 exports.createTask = async (req, res) => {
     const { title, startdate, deadline, pid, descriptionText, dependencies } = req.body;
   
@@ -104,7 +104,6 @@ exports.createTask = async (req, res) => {
     }
   };
 
-// PUT update an existing task
 exports.updateTask = async (req, res) => {
     const taskId = req.params.tid;
     const { title, startdate, deadline, pid, descriptionText, dependencies, progress } = req.body;
@@ -133,7 +132,6 @@ exports.updateTask = async (req, res) => {
     }
 };
 
-// DELETE a task
 exports.deleteTask = async (req, res) => {
     const taskId = req.params.tid;
 

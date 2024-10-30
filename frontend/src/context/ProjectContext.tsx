@@ -1,5 +1,3 @@
-// src/context/ProjectContext.tsx
-
 import React, { createContext, useState, useEffect, ReactNode } from 'react';
 import { Project } from '../types';
 
@@ -26,7 +24,6 @@ export const ProjectProvider: React.FC<{ children: ReactNode }> = ({ children })
     const [selectedProject, setSelectedProject] = useState<Project | null>(null);
 
     useEffect(() => {
-        // Fetch all projects when the component mounts
         fetch('http://localhost:8080/api/projects')
             .then(response => response.json())
             .then(data => {

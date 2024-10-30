@@ -24,12 +24,15 @@ const AddTask: React.FC<AddTaskProps> = ({ onTaskAdded, tasks, setTasks }) => {
   const { selectedProject } = useContext(ProjectContext);
 
   const handleClickOpen = () => {
+    if (!selectedProject || selectedProject.pid === 0) {
+      alert("Please select a project first.");
+      return;
+    }
     setOpen(true);
   };
 
   const handleClose = () => {
     setOpen(false);
-    // Reset all fields when closing the dialog
     setTaskName("");
     setDescription("");
     setTaskStart("");
@@ -38,30 +41,26 @@ const AddTask: React.FC<AddTaskProps> = ({ onTaskAdded, tasks, setTasks }) => {
 
   const handleAddTask = async () => {
     try {
-      if (!selectedProject) {
-        alert("No project selected.");
-        return;
-      }
-
-      // Use project's start date if taskStart is empty
-      const startDateString = taskStart || selectedProject.start;
+      const startDateString = taskStart || selectedProject!.start;
       const startDate = new Date(startDateString);
 
-      // Use start date plus one day if taskEnd is empty
-      const endDateString = taskEnd || new Date(startDate.getTime() + 24 * 60 * 60 * 1000).toISOString().split('T')[0];
+      const endDateString =
+        taskEnd ||
+        new Date(
+          startDate.getTime() + 24 * 60 * 60 * 1000
+        ).toISOString().split("T")[0];
       const endDate = new Date(endDateString);
 
-      // Send the task data to the server
-      const response = await fetch('http://localhost:8080/api/tasks', {
-        method: 'POST',
+      const response = await fetch("http://localhost:8080/api/tasks", {
+        method: "POST",
         headers: {
-          'Content-Type': 'application/json',
+          "Content-Type": "application/json",
         },
         body: JSON.stringify({
           title: taskName,
-          startdate: startDate.toISOString().split('T')[0],
-          deadline: endDate.toISOString().split('T')[0],
-          pid: selectedProject.pid,
+          startdate: startDate.toISOString().split("T")[0],
+          deadline: endDate.toISOString().split("T")[0],
+          pid: selectedProject!.pid,
           descriptionText: description,
           dependencies: [],
         }),
@@ -71,10 +70,8 @@ const AddTask: React.FC<AddTaskProps> = ({ onTaskAdded, tasks, setTasks }) => {
         throw new Error("Failed to add task");
       }
 
-      // Parse the server response to get the new task data
       const data = await response.json();
 
-      // Create the new task object
       const newTask: Task = {
         id: data.taskId.toString(),
         name: taskName,
@@ -83,28 +80,24 @@ const AddTask: React.FC<AddTaskProps> = ({ onTaskAdded, tasks, setTasks }) => {
         type: "task",
         progress: 0,
         dependencies: [],
-        project: selectedProject.pid.toString(),
-        // descriptionText: description,
+        project: selectedProject!.pid.toString(),
         styles: {
-          progressColor: "#3e2d47",
-          progressSelectedColor: "#3e2d47",
+          progressColor: "#83217d",
+          progressSelectedColor: "#83217d",
         },
       };
 
-      // Add the new task to the task list
       setTasks([...tasks, newTask]);
       console.log("Added new task:", newTask);
 
-      // Notify the parent component that a task was added
       onTaskAdded(newTask);
 
-      // Reset all fields after adding the task
       setTaskName("");
       setDescription("");
       setTaskStart("");
       setTaskEnd("");
 
-      handleClose(); // Close the dialog after adding the task
+      handleClose(); 
     } catch (error) {
       console.error("Error adding task:", error);
     }
@@ -112,30 +105,23 @@ const AddTask: React.FC<AddTaskProps> = ({ onTaskAdded, tasks, setTasks }) => {
 
   return (
     <>
-      {/* Button to open the Add Task dialog */}
       <Button text="Add Task" onClick={handleClickOpen} />
-      {/* Dialog for adding a new task */}
       <Dialog open={open} onClose={handleClose}>
         <DialogTitle>Add New Task</DialogTitle>
         <DialogContent>
-          {/* Input field for Task Name */}
           <TextField
             label="Task Name"
             value={taskName}
             onChange={(e) => setTaskName(e.target.value)}
             fullWidth
-            margin="normal"
-          />
-          {/* Input field for Task Description */}
+            margin="normal"/>
           <TextField
             label="Description"
             value={description}
             onChange={(e) => setDescription(e.target.value)}
             fullWidth
             margin="normal"
-            multiline
-          />
-          {/* Input field for Task Start Date */}
+            multiline/>
           <TextField
             label="Start Date"
             type="date"
@@ -145,9 +131,7 @@ const AddTask: React.FC<AddTaskProps> = ({ onTaskAdded, tasks, setTasks }) => {
             margin="normal"
             InputLabelProps={{
               shrink: true,
-            }}
-          />
-          {/* Input field for Task End Date */}
+            }}/>
           <TextField
             label="End Date"
             type="date"
@@ -157,10 +141,8 @@ const AddTask: React.FC<AddTaskProps> = ({ onTaskAdded, tasks, setTasks }) => {
             margin="normal"
             InputLabelProps={{
               shrink: true,
-            }}
-          />
+            }}/>
         </DialogContent>
-        {/* Dialog actions: Cancel and Add Task buttons */}
         <DialogActions>
           <Button onClick={handleClose} text="Cancel" />
           <Button onClick={handleAddTask} text="Add Task" />
