@@ -1,5 +1,3 @@
-// src/components/EditMenu.tsx
-
 import React, { useState, useEffect } from "react";
 import { Dialog, DialogTitle, DialogContent, DialogActions, TextField, Typography, IconButton } from '@mui/material';
 import CloseIcon from '@mui/icons-material/Close';
@@ -184,7 +182,7 @@ const EditMenu: React.FC<EditMenuProps> = ({ open, onClose, selectedTask, tasks,
           open={dependencyDialogOpen}
           onClose={() => setDependencyDialogOpen(false)}
           tasks={tasks}
-          selectedTask={selectedTask!} // השתמשי במפעיל האשמה הלא-ריק
+          selectedTask={selectedTask!}
           selectedDependencies={selectedDependencies}
           handleDependencySelection={handleDependencySelection}
         />
