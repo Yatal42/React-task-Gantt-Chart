@@ -93,8 +93,8 @@ Task Gantt-Chart is a web application that allows users to manage and visualize 
      CREATE TABLE task (
        tid INT AUTO_INCREMENT PRIMARY KEY,
        title VARCHAR(255) NOT NULL,
-       startdate DATE,
-       deadline DATE,
+       startdate DATE NOT NULL,
+       deadline DATE NOT NULL,
        pid INT,
        descriptionText TEXT,
        dependencies JSON,
