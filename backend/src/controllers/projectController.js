@@ -1,6 +1,5 @@
 const db = require('../db');
 
-// GET all projects
 exports.getAllProjects = async (req, res) => {
     try {
         const [rows] = await db.query('SELECT * FROM project');
@@ -11,7 +10,6 @@ exports.getAllProjects = async (req, res) => {
     }
 };
 
-// POST create a new project
 exports.createProject = async (req, res) => {
     const { title, start } = req.body;
 
@@ -27,7 +25,6 @@ exports.createProject = async (req, res) => {
     }
 };
 
-// PUT update a project
 exports.updateProject = async (req, res) => {
     const projectId = req.params.pid;
     const { title, start } = req.body;
@@ -49,7 +46,6 @@ exports.updateProject = async (req, res) => {
     }
 };
 
-// DELETE a project
 exports.deleteProject = async (req, res) => {
     const projectId = req.params.pid;
 

@@ -35,13 +35,10 @@ const GanttChart: React.FC<GanttChartProps> = ({
       try {
         let response;
         if (selectedProject?.pid === 0) {
-          // Fetch all tasks
           response = await fetch(`http://localhost:8080/api/tasks/`);
         } else if (selectedProject) {
-          // Fetch tasks for selected project
           response = await fetch(`http://localhost:8080/api/projects/${selectedProject.pid}/tasks`);
         } else {
-          // No project selected
           setTasks([]);
           return;
         }
@@ -68,8 +65,8 @@ const GanttChart: React.FC<GanttChartProps> = ({
           project: task.pid.toString(),
           description: task.descriptionText || '',
           styles: {
-            progressColor: "#3e2d47",
-            progressSelectedColor: "#3e2d47",
+            progressColor: "#83217d",
+            progressSelectedColor: "#83217d",
           },
         }));
   
@@ -175,7 +172,7 @@ const GanttChart: React.FC<GanttChartProps> = ({
               width: '40px',
               marginBottom: '0px',
               borderRadius: '5px',
-              color: "#3e2d47"
+              color: "#83217d"
             }}
             onClick={() => openEditMenu(task)}>
             <DriveFileRenameOutlineOutlinedIcon />
@@ -188,7 +185,7 @@ const GanttChart: React.FC<GanttChartProps> = ({
           viewMode={view}
           onProgressChange={progressChangeHandler}
           onSelect={handleSelect}
-          arrowColor="#a99d9f"
+          arrowColor="#83217d"
           barFill={55}
           fontFamily="Gill Sans"
           fontSize={"0.8rem"}

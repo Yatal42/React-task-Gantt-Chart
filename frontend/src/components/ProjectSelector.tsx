@@ -29,6 +29,7 @@ const ProjectSelector: React.FC = () => {
                 select
                 size="small"
                 id="project-select-label"
+                color="secondary"
                 value={selectedProject?.pid?.toString() ?? 'null'}
                 onChange={handleChange}
                 label="Select project"

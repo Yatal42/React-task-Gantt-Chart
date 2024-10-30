@@ -29,7 +29,7 @@ const ProjectList: React.FC = () => {
     return (
         <List>
             {projects.map(project => (
-                <ListItem button key={project.pid} onClick={() => selectProject(project)}>
+                <ListItem key={project.pid} onClick={() => selectProject(project)}>
                     <ListItemText primary={project.title} />
                     <IconButton edge="end" aria-label="delete" onClick={() => handleDelete(project.pid)}>
                         <DeleteIcon />

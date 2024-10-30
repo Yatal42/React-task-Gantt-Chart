@@ -65,6 +65,7 @@ const ToolBar: React.FC<ToolBarProps>=({setIsChecked, setView, isChecked, view, 
             <TextField
             id="outlined-select-view"
             select
+            color="secondary"
             sx={{ minWidth: 120, fontSize: 5 }}
             label="View options"
             size="small"
