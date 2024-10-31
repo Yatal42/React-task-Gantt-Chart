@@ -1,0 +1,50 @@
+.gantt-container {
+  display: flex;
+  justify-content: center;
+  background-color: #fff;
+  align-items: flex-start;
+  width: 80%;
+  margin: 20px auto 0; 
+  margin-bottom: 20px;
+  padding: 20px;
+  padding-bottom: 0;
+  border-radius: 5px;
+  border: 1px solid var(--primary-color);
+}
+
+.gantt-chart {
+  display: flex;
+  justify-content: center;
+  flex-direction: row;
+  overflow-x: auto;
+}
+
+.icon-container {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  margin: 30px 5px 0 5px;
+}
+
+.gantt {
+  overflow-x: auto;
+}
+
+/* Media Queries for GanttChart */
+@media (max-width: 768px) {
+  .gantt-container {
+    flex-direction: column;
+    height: auto;
+  }
+
+  .icon-container {
+    flex-direction: row;
+    overflow-x: auto;
+    margin-bottom: 10px;
+    margin-right: 0;
+  }
+
+  .gantt {
+    flex-grow: 0;
+  }
+}

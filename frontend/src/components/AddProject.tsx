@@ -1,7 +1,7 @@
 import React, { useState, useContext } from 'react';
 import { ProjectContext } from '../context/ProjectContext';
 import { Dialog, DialogTitle, DialogContent, DialogActions, TextField } from '@mui/material';
-import Button from "./Button";
+import Button from "./Button/Button";
 import IconButton from '@mui/material/IconButton';
 import CloseIcon from '@mui/icons-material/Close';
 

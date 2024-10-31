@@ -1,0 +1,142 @@
+.todo-overlay {
+  position: fixed;
+  top: 0;
+  right: 0;
+  height: 100%;
+  width: 100%;
+  background-color: rgba(0, 0, 0, 0.5); 
+  display: none; 
+  transition: opacity 0.3s ease;
+  z-index: 999; 
+}
+
+#title {
+  font-size: 2rem;
+  color: #550963;
+  font-weight: bold;
+  margin: 0;
+  padding: 15px;
+}
+
+.todo-overlay.open {
+  display: block;
+  opacity: 1;
+}
+
+.todo-panel {
+  position: fixed;
+  top: 0;
+  right: -400px; 
+  height: 100%;
+  width: 400px; 
+  background-color: #fff;
+  padding: 20px;
+  box-sizing: border-box;
+  transition: right 0.3s ease;
+  z-index: 1000; 
+}
+
+.todo-panel.open {
+  right: 0; 
+}
+
+.todo-container {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  width: 100%;
+  height: 100%;
+  overflow-y: auto;
+}
+
+.todo-heading {
+  display: flex;
+  flex-direction: row;
+  align-items: center; 
+  justify-content: flex-start; 
+  gap: 20px; 
+  margin-bottom: 20px;
+}
+
+.todo-list {
+  width: 100%;
+}
+
+.todo-item {
+  display: flex;
+  align-items: center;
+  padding: 10px;
+  margin-bottom: 10px;
+  border-radius: 5px;
+  border: 1px solid var(--secondary-color);
+  background-color: #f8f8f8;
+  transition: background-color 0.3s;
+}
+
+.todo-item:hover {
+  background-color: var(--secondary-color);
+  color: #fff;
+}
+
+.todo-item.completed {
+  background-color: #e0d5e9;
+  text-decoration: line-through;
+}
+
+.todo-task {
+  flex-grow: 1;
+  padding-left: 10px;
+  font-size: var(--font-size);
+}
+
+.delete-button {
+  background-color: transparent;
+  border: none;
+  color: var(--primary-color);
+  transition: color 0.3s;
+}
+
+.delete-button:hover {
+  color: #550963;
+}
+
+.open-todo-button {
+  position: fixed;
+  top: 15px;
+  right: 15px;
+  z-index: 1001;
+  border-radius: 50%;
+  width: 50px;
+  height: 50px;
+  background-color: var(--secondary-color);
+  color: #fff;
+  border: none;
+  cursor: pointer;
+  font-size: 0.8rem; 
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: background-color 0.3s, transform 0.2s;
+}
+
+.open-todo-button:hover {
+  background-color: var(--primary-color);
+  transform: translateY(-3px);
+}
+
+.open-todo-button:active {
+  transform: translateY(0);
+}
+
+/* Media Queries for Todo */
+@media (max-width: 768px) {
+  .todo-panel {
+    width: 80%;
+  }
+}
+
+@media (max-width: 600px) {
+  .todo-panel {
+    width: 100%;
+  }
+}

@@ -3,8 +3,10 @@ import { Gantt, Task, ViewMode } from "gantt-task-react";
 import "gantt-task-react/dist/index.css";
 import IconButton from "@mui/material/IconButton";
 import DriveFileRenameOutlineOutlinedIcon from '@mui/icons-material/DriveFileRenameOutlineOutlined';
-import EditMenu from './EditMenu';
-import { ProjectContext } from '../context/ProjectContext';
+import EditMenu from '../EditMenu';
+import { ProjectContext } from "../../context/ProjectContext";
+import './GanttChart.css';
+
 
 interface GanttChartProps {
   view: ViewMode;
@@ -187,7 +189,6 @@ const GanttChart: React.FC<GanttChartProps> = ({
           key={task.id}
           sx={{
             display: 'inline',
-            // zIndex: 100,
             height: '40px',
             width: '40px',
             borderRadius: '10px',

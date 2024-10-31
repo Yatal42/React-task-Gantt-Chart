@@ -1,5 +1,5 @@
 import React, { useState, useContext } from "react";
-import Button from "./Button";
+import Button from "./Button/Button";
 import Dialog from "@mui/material/Dialog";
 import DialogActions from "@mui/material/DialogActions";
 import DialogContent from "@mui/material/DialogContent";
@@ -7,7 +7,6 @@ import DialogTitle from "@mui/material/DialogTitle";
 import TextField from "@mui/material/TextField";
 import { Task } from "gantt-task-react";
 import { ProjectContext } from '../context/ProjectContext';
-import Box from '@mui/material/Box';
 import IconButton from '@mui/material/IconButton';
 import CloseIcon from '@mui/icons-material/Close';
 
@@ -42,6 +41,11 @@ const AddTask: React.FC<AddTaskProps> = ({ onTaskAdded, tasks, setTasks }) => {
   };
 
   const handleAddTask = async () => {
+    if (!taskName.trim() || !description.trim() || !taskEnd.trim()) {
+      alert("Please fill in all required fields: Task Name, Description, and End Date.");
+      return;
+    }
+    
     try {
       const startDateString = taskStart || selectedProject!.start;
       const startDate = new Date(startDateString);
