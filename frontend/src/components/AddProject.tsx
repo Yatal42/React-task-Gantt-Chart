@@ -6,7 +6,7 @@ import IconButton from '@mui/material/IconButton';
 import CloseIcon from '@mui/icons-material/Close';
 
 const AddProject: React.FC = () => {
-    const { addProject } = useContext(ProjectContext);
+    const { addProject, selectProject} = useContext(ProjectContext);
     const [open, setOpen] = useState(false);
     const [title, setTitle] = useState('');
     const [start, setStart] = useState('');
@@ -32,7 +32,9 @@ const AddProject: React.FC = () => {
             .then(response => response.json())
             .then(data => {
                 if (data.projectId) {
-                    addProject({ pid: data.projectId, title, start });
+                    const newProject = { pid: data.projectId, title, start };
+                    addProject(newProject);
+                    selectProject(newProject); 
                     handleClose();
                 } else {
                     alert('Error creating new project');

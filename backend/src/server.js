@@ -4,6 +4,7 @@ const express = require('express');
 const cors = require('cors');
 const projectRoutes = require('./routes/projectRoutes');
 const taskRoutes = require('./routes/taskRoutes');
+const todoRoutes = require('./routes/todoRoutes');
 const errorHandler = require('./middleware/errorHandler');
 
 const app = express();
@@ -14,6 +15,7 @@ app.use(express.json());
 
 app.use('/api/projects', projectRoutes);
 app.use('/api/tasks', taskRoutes);
+app.use('/api/todo',todoRoutes);
 
 app.use((req, res) => {
     res.status(404).send({ message: 'Route not found' });
