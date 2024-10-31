@@ -136,7 +136,6 @@ exports.deleteTask = async (req, res) => {
     const taskId = req.params.tid;
 
     try {
-        // מחיקת המשימה עצמה
         const [deleteResult] = await db.query(`
             DELETE FROM task
             WHERE tid = ?;
@@ -146,7 +145,6 @@ exports.deleteTask = async (req, res) => {
             return res.status(404).json({ message: 'Task not found' });
         }
 
-        // עדכון התלויות של משימות אחרות, אם ישנן
         await db.query(`
             UPDATE task
             SET dependencies = JSON_REMOVE(dependencies, JSON_UNQUOTE(JSON_SEARCH(dependencies, 'one', ?)))

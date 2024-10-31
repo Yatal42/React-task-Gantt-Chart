@@ -14,5 +14,4 @@ export interface Task {
     descriptionText: string;
     dependencies: string[];
     progress: number;
-    // project: string;
 }

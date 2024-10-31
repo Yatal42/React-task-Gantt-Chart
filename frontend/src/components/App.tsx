@@ -4,6 +4,7 @@ import "gantt-task-react/dist/index.css";
 import "./App.css";
 import GanttChart from "./GanttChart";
 import Heading from "./Heading";
+import TodoList from "./TodoList";
 
 const App: React.FC = () => {
     const [selectedTask, setSelectedTask] = useState<Task | null>(null);
@@ -46,6 +47,9 @@ const App: React.FC = () => {
                     selectedTask={selectedTask}
                     setSelectedTask={setSelectedTask} 
                 />
+            </div>
+            <div className="todo-container">
+                <TodoList />
             </div>
         </div>
     );

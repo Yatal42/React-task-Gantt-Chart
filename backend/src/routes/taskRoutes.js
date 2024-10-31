@@ -1,14 +1,10 @@
-// src/routes/taskRoutes.js
-
 const express = require('express');
 const router = express.Router();
 const taskController = require('../controllers/taskController');
 const { body, validationResult } = require('express-validator');
 
-// GET all tasks
 router.get('/', taskController.getAllTasks);
 
-// POST create a new task with validation
 router.post('/',
     [
         body('title').notEmpty().withMessage('Title is required'),
@@ -26,7 +22,6 @@ router.post('/',
     }
 );
 
-// PUT update a task with validation
 router.put('/:tid',
     [
         body('title').notEmpty().withMessage('Title is required'),
@@ -44,7 +39,6 @@ router.put('/:tid',
     }
 );
 
-// DELETE a task
 router.delete('/:tid', taskController.deleteTask);
 
 module.exports = router;
