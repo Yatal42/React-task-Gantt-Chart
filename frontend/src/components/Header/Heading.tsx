@@ -1,7 +1,8 @@
 import React from "react";
 import "gantt-task-react/dist/index.css";
 import { ViewMode, Task } from "gantt-task-react";
-import ToolBar from "./ToolBar";
+import ToolBar from "../ToolBar/ToolBar";
+import './Header.css';
 
 interface HeadingProps {
     setIsChecked: (checked: boolean) => void; 

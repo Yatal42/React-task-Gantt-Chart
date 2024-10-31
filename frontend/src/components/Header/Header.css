@@ -1,0 +1,54 @@
+.heading {
+  text-align: center;
+  margin-bottom: 20px;
+}
+
+.heading-title {
+  margin-bottom: 10px;
+}
+
+#title {
+  font-size: 2rem;
+  color: #550963;
+  font-weight: bold;
+  margin: 0;
+  padding: 15px;
+}
+
+#line {
+  height: 6px;
+  background-color: var(--secondary-color);
+  border-radius: 15px;
+  width: 100%;
+}
+
+/* Media Queries for Heading */
+@media (max-width: 600px) {
+  .heading-container {
+    padding: 0 10px;
+  }
+
+  #title {
+    font-size: 1rem;
+  }
+}
+
+@media (min-width: 601px) and (max-width: 900px) {
+  .heading-container {
+    padding: 0 15px;
+  }
+
+  #title {
+    font-size: 1.8rem;
+  }
+}
+
+@media (min-width: 901px) and (max-width: 1200px) {
+  .heading-container {
+    padding: 0 20px;
+  }
+
+  #title {
+    font-size: 2rem;
+  }
+}

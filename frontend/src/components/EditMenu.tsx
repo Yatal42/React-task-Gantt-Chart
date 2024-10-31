@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { Dialog, DialogTitle, DialogContent, DialogActions, TextField, Typography, IconButton } from '@mui/material';
 import CloseIcon from '@mui/icons-material/Close';
-import Button from "./Button";
+import Button from "./Button/Button";
 import { Task } from "gantt-task-react";
 import EditDependencies from './EditDependencies';
 

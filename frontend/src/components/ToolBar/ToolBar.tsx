@@ -1,13 +1,14 @@
 import React, {useContext } from "react";
-import { ProjectContext } from '../context/ProjectContext';
+import { ProjectContext } from "../../context/ProjectContext";
 import "gantt-task-react/dist/index.css";
 import { ViewMode, Task } from "gantt-task-react";
 import TextField from "@mui/material/TextField";
 import MenuItem from "@mui/material/MenuItem";
-import AddTask from "./AddTask";
-import ProjectSelector from "./ProjectSelector"
-import AddProject from "./AddProject"
-import Button from "./Button"
+import AddTask from "../AddTask";
+import ProjectSelector from "../ProjectSelector"
+import AddProject from "../AddProject"
+import Button from "../Button/Button"
+import './ToolBar.css'
 
 interface ToolBarProps {
     setIsChecked: (checked: boolean) => void; 
@@ -23,7 +24,8 @@ const ToolBar: React.FC<ToolBarProps>=({setIsChecked, setView, isChecked, view, 
 
     const viewsOptions = [
         { value: "Week", onChange: ViewMode.Week },
-        { value: "Month", onChange: ViewMode.Month },];
+        { value: "Month", onChange: ViewMode.Month },
+    ];
     
     const handleViewChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     const selectedOption = viewsOptions.find((option) => option.value === event.target.value);

@@ -2,7 +2,8 @@ import React, { useState, useEffect } from 'react';
 import { Checkbox, TextField, List, ListItem, ListItemText, IconButton } from '@mui/material';
 import DeleteIcon from '@mui/icons-material/Delete';
 import CloseIcon from '@mui/icons-material/Close';
-import Button from './Button';
+import Button from '../Button/Button';
+import './TodoList.css'
 
 interface Todo {
     id: number;
@@ -99,9 +100,7 @@ const TodoList: React.FC = () => {
             <button className="open-todo-button" onClick={togglePanel}>
                 {isOpen ? <CloseIcon /> : "TODO"}
             </button>
-
             <div className={`todo-overlay ${isOpen ? 'open' : ''}`} onClick={togglePanel}></div>
-
             <div className={`todo-panel ${isOpen ? 'open' : ''}`}>
                 <div className="todo-container">
                     <h2 id="title">TODO List</h2>
