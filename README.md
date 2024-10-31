@@ -4,6 +4,10 @@
 
 Task Gantt-Chart is a web application that allows users to manage and visualize their projects using an interactive Gantt chart. Users can create projects, add tasks with dependencies, track progress, and manage their project timelines efficiently.
 
+## Preview
+
+[![Watch the video](src/images/video-thumbnail.png)](https://youtu.be/mx6-K3wZFmE)
+
 ## Features
 
 - **Project Management:** Create, update, and delete projects.
