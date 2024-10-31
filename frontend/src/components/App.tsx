@@ -1,7 +1,6 @@
 import React, { useState, useCallback} from "react";
 import { ViewMode, Task } from "gantt-task-react";
 import "gantt-task-react/dist/index.css";
-// import "./App.css";
 import Heading from "./Header/Heading";
 import GanttChart from "./GanttChart/GanttChart";
 import TodoList from "./TodoList/TodoList";

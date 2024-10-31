@@ -2,7 +2,7 @@ import React from "react";
 import "gantt-task-react/dist/index.css";
 import { ViewMode, Task } from "gantt-task-react";
 import ToolBar from "../ToolBar/ToolBar";
-import './Header.css';
+import './Heading.css';
 
 interface HeadingProps {
     setIsChecked: (checked: boolean) => void; 

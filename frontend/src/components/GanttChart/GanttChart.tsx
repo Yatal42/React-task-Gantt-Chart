@@ -7,7 +7,6 @@ import EditMenu from '../EditMenu';
 import { ProjectContext } from "../../context/ProjectContext";
 import './GanttChart.css';
 
-
 interface GanttChartProps {
   view: ViewMode;
   isChecked: boolean;
@@ -81,18 +80,6 @@ const GanttChart: React.FC<GanttChartProps> = ({
     fetchTasks();
   }, [selectedProject, setTasks]);
   
-  useEffect(() => {
-    const handleResize = () => {
-      if (isChecked) {
-        setColsWidth(window.innerWidth <= 1150 ? 100 : 160);
-      }
-    };
-    window.addEventListener("resize", handleResize);
-    return () => {
-      window.removeEventListener("resize", handleResize);
-    };
-  }, [isChecked]);
-
   const progressChangeHandler = useCallback(
     (task: Task) => {
       const newTasks = tasks.map((t) => (t.id === task.id ? { ...task } : t));
@@ -193,7 +180,6 @@ const GanttChart: React.FC<GanttChartProps> = ({
             width: '40px',
             borderRadius: '10px',
             color: "#83217d",
-
           }}
           onClick={() => openEditMenu(task)}>
           <DriveFileRenameOutlineOutlinedIcon />
