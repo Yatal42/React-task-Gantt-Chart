@@ -124,7 +124,8 @@ const EditMenu: React.FC<EditMenuProps> = ({ open, onClose, selectedTask, tasks,
         });
     }
   };
-
+ 
+  // CR: you should create an anstract Dialog component that you can reuse, and only change the content
   return (
     <>
       <Dialog onClose={onClose} open={open}>

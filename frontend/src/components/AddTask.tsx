@@ -50,6 +50,8 @@ const AddTask: React.FC<AddTaskProps> = ({ onTaskAdded, tasks, setTasks }) => {
       const startDateString = taskStart || selectedProject!.start;
       const startDate = new Date(startDateString);
 
+      // CR: magic numbers
+      // CR: very confusing
       const endDateString =
         taskEnd ||
         new Date(
@@ -64,7 +66,9 @@ const AddTask: React.FC<AddTaskProps> = ({ onTaskAdded, tasks, setTasks }) => {
         },
         body: JSON.stringify({
           title: taskName,
+          // CR: duplication of code
           startdate: startDate.toISOString().split("T")[0],
+          // CR: duplication of code
           deadline: endDate.toISOString().split("T")[0],
           pid: selectedProject!.pid,
           descriptionText: description,
@@ -108,7 +112,8 @@ const AddTask: React.FC<AddTaskProps> = ({ onTaskAdded, tasks, setTasks }) => {
       console.error("Error adding task:", error);
     }
   };
-
+  // CR: another dialog that is copied
+  // CR: the mix of css and jsx makes me sick
   return (
     <>
       <Button text="Add Task" onClick={handleClickOpen} />

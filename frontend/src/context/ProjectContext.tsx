@@ -19,11 +19,16 @@ export const ProjectContext = createContext<ProjectContextProps>({
     deleteProject: async () => {},
 });
 
+// CR: This is bad paractice, use Redux
 export const ProjectProvider: React.FC<{ children: ReactNode }> = ({ children }) => {
     const [projects, setProjects] = useState<Project[]>([]);
     const [selectedProject, setSelectedProject] = useState<Project | null>(null);
 
     useEffect(() => {
+        // CR: The fetch should be in a separate function, not in the useEffect
+        // CR: The URL is hardcoded, this is usually not a good practice, but forgivable in this case
+        // CR: There is no separation of concerns in your project, making it that the fetch happens where logic happens,
+        //     this shuold be separated into a service or a hook
         fetch('http://localhost:8080/api/projects')
             .then(response => response.json())
             .then(data => {
@@ -37,6 +42,7 @@ export const ProjectProvider: React.FC<{ children: ReactNode }> = ({ children })
                     } else if (data.length > 0) {
                         setSelectedProject(data[0]);
                     }
+                    // CR: You check for the same condition twice, this can be simplified
                 } else if (data.length > 0) {
                     setSelectedProject(data[0]);
                 }
@@ -82,6 +88,7 @@ const deleteProject = async (pid: number) => {
       }
     } catch (error) {
       console.error('Error deleting project:', error);
+      // CR: Remove the alerts it is bad user experience
       alert('Failed to delete project. Please try again.');
     }
   };

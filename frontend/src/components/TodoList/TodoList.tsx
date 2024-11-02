@@ -95,6 +95,7 @@ const TodoList: React.FC = () => {
         setIsOpen(!isOpen);
     };
 
+    // CR: abuse of fragment, you can use a div instead
     return (
         <>
             <button className="open-todo-button" onClick={togglePanel}>

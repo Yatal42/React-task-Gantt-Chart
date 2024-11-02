@@ -148,6 +148,7 @@ const GanttChart: React.FC<GanttChartProps> = ({
     return <div className="text">There are no tasks to display in this project.</div>;
   }
 
+  // CR: again you have colors here that are not from your pallette and magic numbers
   return (
     <div className="gantt-chart" ref={ganttRef}>
       <div className="gantt">

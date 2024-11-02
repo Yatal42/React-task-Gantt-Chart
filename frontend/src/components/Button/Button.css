@@ -21,6 +21,7 @@
   transform: translateY(0);
 }
 
+/* CR: you can't work with bout max-width and min-width in media queries, it is very confusing */
 /* Media Queries for Button */
 @media (max-width: 600px) {
   .button {

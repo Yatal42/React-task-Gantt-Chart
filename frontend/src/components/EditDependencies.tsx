@@ -22,6 +22,7 @@ const EditDependencies: React.FC<EditDependenciesProps> = ({
 }) => {
   const availableTasks = tasks.filter(task => task.project === selectedTask.project && task.id !== selectedTask.id);
 
+  // CR: The mix of CSS code (sx) inside the component is not a good practice
   return (
     <Dialog open={open} onClose={onClose}>
       <DialogTitle sx={{ fontSize: "15px", padding: "15px" }}>Dependencies</DialogTitle>
