@@ -1,3 +1,9 @@
+/* 
+CR: this is very much not responsive, but I don't think you aimed for that.
+ALso, this has some weird constant values. some of the colors you store in variables and others you dont
+please be more organised in your code.
+*/
+
 :root {
   --primary-color: #83217d;
   --secondary-color: #c1bcc8;

@@ -7,7 +7,10 @@ const ProjectList: React.FC = () => {
     const { projects, selectProject, deleteProject } = useContext(ProjectContext);
 
     const handleDelete = (pid: number) => {
+        // CR: the window.confirm is bad user experience, you should use a dialog
         if (window.confirm('Are you sure you want delete this project?')) {
+            // CR: this might be an SQL injection, you should validate the input
+            // CR: after checking this is indeed an SQL injection
             fetch(`http://localhost:8080/api/projects/${pid}`, {
                 method: 'DELETE',
             })

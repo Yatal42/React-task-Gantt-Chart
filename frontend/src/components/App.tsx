@@ -25,6 +25,7 @@ const App: React.FC = () => {
         [setSelectedTask]
     );
 
+    // CR: You need to split your website into sections: header, main and footer
     return (
         <div>
             <div className="header-container">

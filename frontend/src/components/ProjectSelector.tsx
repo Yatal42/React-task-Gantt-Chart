@@ -7,6 +7,7 @@ const ProjectSelector: React.FC = () => {
     const { projects, selectedProject, selectProject } = useContext(ProjectContext);
 
     const handleChange = (event: any) => {
+        // CR: if the value is actually null this will break
         const pid = event.target.value === 'null' ? null : Number(event.target.value);
         
         if (pid === 0) {

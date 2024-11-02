@@ -1,5 +1,6 @@
 const db = require('../db');
 
+// CR: this is not actuallt a controller if it has a db query in it
 exports.getTodos = async (req, res) => {
     try {
         const [rows] = await db.query(`SELECT * FROM todo;`);
